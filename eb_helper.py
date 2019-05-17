@@ -4,7 +4,7 @@ from pprint import pformat
 import os
 
 # import requests
-
+from secrets import EVENTBRITE_TOKEN
 from dateutil import parser
 import pytz
 from datetime import datetime
@@ -12,7 +12,7 @@ from datetime import datetime
 # Global variables: Eventbrite token and URL
 # Change to secrets when ready for GitHub!!!
 # EVENTBRITE_TOKEN = os.getenv('EVENTBRITE_TOKEN')
-EVENTBRITE_TOKEN = "JPNZQAGVM7G4FMX2RN5A"
+EVENTBRITE_TOKEN = os.environ.get("EVENTBRITE_TOKEN")
 EVENTBRITE_URL = "https://www.eventbriteapi.com/v3/"
 
 
