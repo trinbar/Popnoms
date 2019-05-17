@@ -3,7 +3,7 @@
 from pprint import pformat
 import os
 
-import requests
+# import requests
 
 from dateutil import parser
 import pytz

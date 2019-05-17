@@ -2,6 +2,7 @@
 
 # Import os so that we can create db
 import os
+from server import app
 from model import Event, User, db, connect_to_db
 
 def load_users():
@@ -14,12 +15,9 @@ def load_users():
     db.session.commit()
 
 if __name__ == "__main__":
-    # Create the database
-    os.system("createdb popnoms")
-
+ 
     # Connect the DB to an app so FlaskSQL alchemy works
-    from flask import Flask
-    app = Flask(__name__)
+  
     connect_to_db(app)
 
     # Create the tables

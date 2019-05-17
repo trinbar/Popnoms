@@ -60,7 +60,7 @@ class User(db.Model):
     """Movie on ratings website."""
 
     __tablename__ = "users"
-
+    
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True,)
     username = db.Column(db.String(50), nullable=False,)
     password = db.Column(db.String(50), nullable=False,)
@@ -70,24 +70,6 @@ class User(db.Model):
         """Provide helpful representation when printed."""
 
         return f"<User user_id={self.user_id} username={self.username} email={self.email}>"
-
-# class Starred(db.Model):
-#     """User's bookmarks of specific events on jams website."""
-
-#     __tablename__ = "starreds"
-
-#     starred_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
-#     event_id = db.Column(db.String(200), db.ForeignKey("events.event_id"), nullable=False)
-    
-#     # Define relationship to User
-#     user = db.relationship("User", backref=db.backref("starreds", order_by=starred_id))
-
-#     def __repr__(self):
-#         """""Provide helpful representation when printed."""
-
-#         return f"<Starred starred_id={self.starred_id} user_id={self.user_id} event_id={self.event_id}"
-
 
 
 ##############################################################################
@@ -99,7 +81,6 @@ def connect_to_db(app):
     # Configure to use our PostgreSQL database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///popnoms'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)
 
@@ -109,6 +90,5 @@ if __name__ == "__main__":
     # you in a state of being able to work with the database directly.
 
     from server import app
-
     connect_to_db(app)
     print("Connected to DB.")
