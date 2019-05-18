@@ -110,8 +110,7 @@ def view_popups():
 
     #Request.form.get results from homepage's search for
     location = request.form["location"]
-    start_date_kw = request.form["date"]
-    print(location, start_date_kw)
+    start_date_kw = request.form["date_kw"]
 
     #Get user_id from session
     user_id = session.get("user_id")
@@ -121,10 +120,8 @@ def view_popups():
     #     save_search_to_db(user_id=user_id, search_location=location)
 
     events = get_events(location, start_date_kw)
-    print(events[0])
 
-
-    return render_template("view_popnoms.html", events=events, location=location, start_date_kw=start_date_kw)
+    return render_template("view_popnoms.html", events=events, location=location)
 
     
     #Use search results to pass through as arguments in eb_helper

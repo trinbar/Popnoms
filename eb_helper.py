@@ -12,7 +12,7 @@ from model import Event, User, Search, db, connect_to_db
 # Global variables: Eventbrite token and URL
 # Change to secrets when ready for GitHub!!!
 # EVENTBRITE_TOKEN = os.getenv('EVENTBRITE_TOKEN')
-EVENTBRITE_TOKEN = os.getenviron(EVENTBRITE_TOKEN)
+EVENTBRITE_TOKEN = "HPUKCNXDXMR4NVEYB4HK"
 EVENTBRITE_URL = "https://www.eventbriteapi.com/v3/"
 
 #### SHOULD I CREATE A HELPER FUNCTION OR KEEP IN THE REGISTER ROUTE?###
@@ -54,8 +54,8 @@ def get_events(location, start_date_kw):
     # Set variable, category_id, to 110 which corresponds to Food&Drink in API
     category_id = "110"
 
-    payload = {'q':{'location.address': location, 'start_date.keyword': start_date_kw, 
-    'categories': category_id}}
+    payload = {'location.address': location, 'start_date.keyword': start_date_kw, 
+    'categories': category_id}
 
     response = requests.get(EVENTBRITE_URL + "events/search/", headers=headers, params=payload)
 
@@ -70,6 +70,7 @@ def get_events(location, start_date_kw):
         name = event["name"]["text"]
         event_id = event["id"]
         logo = event["logo"]
+        eb_url = event["url"]
 
         # Get start/end local time and timezone to add to event details dict
         start_timezone = event["start"]["timezone"]
@@ -84,6 +85,7 @@ def get_events(location, start_date_kw):
         event_details["event_id"] = event_id
         event_details["start_time"] = start_time
         event_details["end_time"] = end_time
+        event_details["eb_url"] = eb_url
 
         # Check to see if logo exits, if it doesn't, set it to a default image
         if logo is not None:

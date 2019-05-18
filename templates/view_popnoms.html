@@ -11,7 +11,7 @@
       <h3>PopNoms in {{ location }}</h3>
       <ul class="events">
         {% for event in events %}
-          <li><a href="{{ event["name"] }}>{{ event["name"] }}</a></li>
+          <li><a href="{{ event["eb_url"] }}">{{ event["name"] }}</a></li>
         {% endfor %}
       </ul>
 
@@ -21,7 +21,7 @@
 
       <h2>Map will go here</h2>
 
-      <pre>{{ logo }}</pre>
+      <pre>{{ location }}</pre>
 
     </div>
 
