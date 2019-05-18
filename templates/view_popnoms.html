@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Pop-up Events{% endblock %}
+{% block title %}PopNoms{% endblock %}
 
 {% block content %}
 
@@ -8,10 +8,10 @@
 
     <div class="col-xs-12 col-md-6">
 
-      <h2>Pop-ups</h2>
+      <h3>PopNoms in {{ location }}</h3>
       <ul class="events">
-        {% for event in results %}
-          <li><a href="{{ event.url }}">{{ event.name.text }}</a></li>
+        {% for event in events %}
+          <li><a href="{{ event["name"] }}>{{ event["name"] }}</a></li>
         {% endfor %}
       </ul>
 
@@ -21,7 +21,7 @@
 
       <h2>Map will go here</h2>
 
-      <pre>{{ data }}</pre>
+      <pre>{{ logo }}</pre>
 
     </div>
 

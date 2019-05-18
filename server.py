@@ -5,12 +5,11 @@
 from flask import Flask, render_template, request, flash, redirect, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import db, connect_to_db, User, Event 
+from model import db, connect_to_db, User, Event, Search
 
-from eb_helper import (get_events, get_event_details, create_new_user)
+from eb_helper import (get_events, get_event_details, create_new_user, save_search_to_db)
 
-
-import random
+import requests
 
 # from batched_eb_request import (get_batched_results, get_list_of_suggested_events, 
 # get_suggested_event_details)
@@ -50,15 +49,21 @@ def register_process():
     name = request.form["name"]
     email = request.form["email"]
     password = request.form["password"]
-    
 
-    new_user = User(email=email, password=password, username=name)
+    # Query the DB and make sure that the user doesn't already exist
+    user = db.session.query(User).filter((User.email == email) & (User.password == password)).first()
 
-    db.session.add(new_user)
-    db.session.commit()
-
-    flash(f"User {email} added.")
-    return redirect(f"/")
+    #If user == None, register user as new_user
+    if user == None:
+        new_user = create_new_user(name, email, password)
+        
+        #Add new_user to the session
+        session["new_user"] = new_user.user_id
+        flash(f"User {email} added. Please log in.")
+        return redirect(f"/login_form")
+    else:
+        flash(f"User already exists. Please log in.")
+        return redirect(f"/login_form")
 
 @app.route('/login_form')
 def login_form():
@@ -98,6 +103,36 @@ def logout():
     del session["user_id"]
     flash("Logged Out.")
     return redirect("/")
+
+@app.route('/view_popnoms', methods=['GET','POST'])
+def view_popups():
+    """Display popup events."""
+
+    #Request.form.get results from homepage's search for
+    location = request.form["location"]
+    start_date_kw = request.form["date"]
+    print(location, start_date_kw)
+
+    #Get user_id from session
+    user_id = session.get("user_id")
+
+    #If user in session
+    # if user_id:
+    #     save_search_to_db(user_id=user_id, search_location=location)
+
+    events = get_events(location, start_date_kw)
+    print(events[0])
+
+
+    return render_template("view_popnoms.html", events=events, location=location, start_date_kw=start_date_kw)
+
+    
+    #Use search results to pass through as arguments in eb_helper
+    # functions
+    #Render in view_popnoms html template
+
+#Add app.route that posts click events to db? Or does this done in React,
+# and not in server file???
 
 
 if __name__ == "__main__":

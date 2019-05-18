@@ -10,9 +10,9 @@
   <!-- Bootstrap -->
   <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/cyborg/bootstrap.min.css"
         rel="stylesheet">
-<link href='http://fonts.googleapis.com/css?family=Frijole' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Helvetica' rel='stylesheet' type='text/css'>
   <style>
-      h1, h2, h3, .navbar-brand { font-family: "Frijole"; }
+      h1, h2, h3, .navbar-brand { font-family: "Helvetica"; }
 
       
       #homepage-title {
@@ -20,7 +20,7 @@
           top: 0.5em;
           width: 100%;
           text-align: center;
-          color: white;
+          color: black;
           font-weight: 400;
           font-size: 500%;
       }
@@ -29,7 +29,8 @@
         width: 100%;
         height: 100%;
         margin: 0;
-        background-color: #000000;
+        background-color: #cccccc;
+        color: black;
       }
 
       #homepage-block {
@@ -44,7 +45,7 @@
       #extending {
                     margin: 0px;
                     padding: 0px;
-                    background-color: #000000;
+                    background-color: #cccccc;
                     width: 100%;
                     height: 100%;
                  }
@@ -80,7 +81,7 @@
          id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li><a href="/about">About</a></li>
-        <li><a href="/events">View All Events</a></li>
+        <li><a href="/all-popnoms">View All Popnoms</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if "user_id" in session %}
@@ -93,17 +94,19 @@
 
       </ul>
     </div>
+      </div>
     <!-- /.navbar-collapse -->
-  </div>
+  </nav>
   <!-- /.container-fluid -->
-</nav>
+
 <div id="extending">
   {% for flash in get_flashed_messages() %}
     <div class="alert alert-danger" style="width:90%; margin:0 auto;">{{ flash }}</div>
   {% endfor %}
+
 {% block content %}
 {% endblock %}
-</div>
+
 
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>

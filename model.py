@@ -15,7 +15,7 @@ db = SQLAlchemy()
 # Model definitions
 
 class Event(db.Model):
-    """User of events website."""
+    """Event of Popnoms website."""
 
     __tablename__ = "events"
 
@@ -57,7 +57,7 @@ class Event(db.Model):
         return f"<Event event_id={self.event_id} name={self.name}> summary={self.summary}>"
 
 class User(db.Model):
-    """Movie on ratings website."""
+    """User on Popnoms website."""
 
     __tablename__ = "users"
     
@@ -70,6 +70,24 @@ class User(db.Model):
         """Provide helpful representation when printed."""
 
         return f"<User user_id={self.user_id} username={self.username} email={self.email}>"
+
+class Search(db.Model):
+    """User on Popnoms website."""
+
+    __tablename__ = "searches"
+    
+    search_id = db.Column(db.Integer, autoincrement=True, primary_key=True,)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False,)
+    timestamp = db.Column(db.DateTime, nullable=False,)
+    search_location = db.Column(db.String(75), nullable=False)
+
+    # Relational attributes with User and Event classes
+    # user = db.relationship("User", backref=db.backref("searches", order_by=search_id))
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return f"<Search search_id={self.search_id} user_id={self.user_id} search_location={self.search_location}>"
 
 
 ##############################################################################

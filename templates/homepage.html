@@ -2,6 +2,20 @@
 {% block content %}
   <div id="homepage-block">
     <h1 id="homepage-title">PopNoms</h1>
+
+<div align=center>
+    <h2> Search Popnoms</h2>
+    <form action="/view_popnoms" method="POST">
+        <br>
+        In
+            <input class="location" type="location" name="location"><br>
+        On/Around
+            <input class="date" type="date" name="date"><br>
+            <input class="submit" type="submit" name="submit" value="Search">
+    </form>
+   </div>
+
   </div>
+      
 
 {% endblock %}

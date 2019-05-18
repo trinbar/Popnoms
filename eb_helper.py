@@ -3,28 +3,27 @@
 from pprint import pformat
 import os
 
-# import requests
-from secrets import EVENTBRITE_TOKEN
+import requests
 from dateutil import parser
 import pytz
 from datetime import datetime
+from model import Event, User, Search, db, connect_to_db
 
 # Global variables: Eventbrite token and URL
 # Change to secrets when ready for GitHub!!!
 # EVENTBRITE_TOKEN = os.getenv('EVENTBRITE_TOKEN')
-EVENTBRITE_TOKEN = os.environ.get("EVENTBRITE_TOKEN")
+EVENTBRITE_TOKEN = "HPUKCNXDXMR4NVEYB4HK"
 EVENTBRITE_URL = "https://www.eventbriteapi.com/v3/"
 
-
+#### SHOULD I CREATE A HELPER FUNCTION OR KEEP IN THE REGISTER ROUTE?###
 def create_new_user(name, email, password):
     """Creates a new user in the DB."""
 
-    new_user = User(email=email, name=name, password=password)
+    new_user = User(email=email, username=name, password=password)
     db.session.add(new_user)
     db.session.commit()
 
     return new_user
-
 
 def parse_datetime(timezone, local_dt_str):
     """Takes a timezone and local datetime string and returns date and time"""
@@ -55,11 +54,10 @@ def get_events(location, start_date_kw):
     # Set variable, category_id, to 110 which corresponds to Food&Drink in API
     category_id = "110"
 
-    payload = {'query':{'location.address': location, 'start_date.keyword': start_date_kw, 
+    payload = {'q':{'location.address': location, 'start_date.keyword': start_date_kw, 
     'categories': category_id}}
 
-    response = requests.get(EVENTBRITE_URL + "events/search/", headers=headers, 
-        verify=True, params=payload)
+    response = requests.get(EVENTBRITE_URL + "events/search/", headers=headers, params=payload)
 
     data = response.json()
 
@@ -161,8 +159,8 @@ def get_event_details(event_id):
 
     return event
 
-    def get_venue_details(venue_id):
-        """Gets information about a venue based on the venue id."""
+def get_venue_details(venue_id):
+    """Gets information about a venue based on the venue id."""
 
     headers = {'Authorization': 'Bearer ' + EVENTBRITE_TOKEN}
 
@@ -184,6 +182,16 @@ def get_event_details(event_id):
                      "city": city, "region": region, "latitude": latitude, "longitude":longitude}
 
     return venue_details
+
+def save_search_to_db(user_id, search_location):
+    """Saves searches to DB based on user_id."""
+
+    timestamp = datetime.now()
+
+    new_search = Search(user_id=user_id, timestamp=timestamp, search_location=search_location)
+
+    db.session.add(new_search)
+    db.session.commit()
 
 
 
