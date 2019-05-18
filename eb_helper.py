@@ -12,7 +12,7 @@ from model import Event, User, Search, db, connect_to_db
 # Global variables: Eventbrite token and URL
 # Change to secrets when ready for GitHub!!!
 # EVENTBRITE_TOKEN = os.getenv('EVENTBRITE_TOKEN')
-EVENTBRITE_TOKEN = "HPUKCNXDXMR4NVEYB4HK"
+EVENTBRITE_TOKEN = os.getenviron(EVENTBRITE_TOKEN)
 EVENTBRITE_URL = "https://www.eventbriteapi.com/v3/"
 
 #### SHOULD I CREATE A HELPER FUNCTION OR KEEP IN THE REGISTER ROUTE?###
