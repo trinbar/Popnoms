@@ -71,6 +71,7 @@ def get_events(location, start_date_kw):
         event_id = event["id"]
         logo = event["logo"]
         eb_url = event["url"]
+        venue_id = event["venue_id"]
 
         # Get start/end local time and timezone to add to event details dict
         start_timezone = event["start"]["timezone"]
@@ -86,6 +87,7 @@ def get_events(location, start_date_kw):
         event_details["start_time"] = start_time
         event_details["end_time"] = end_time
         event_details["eb_url"] = eb_url
+        event_details["venue_id"] = venue_id
 
         # Check to see if logo exits, if it doesn't, set it to a default image
         if logo is not None:
@@ -99,7 +101,7 @@ def get_events(location, start_date_kw):
     # Returns a list of dictionaries for each event with event details
     return events
 
-def get_event_details(event_id):
+def add_event_to_db(event_id):
     """Gets details about a specific event by id, and adds event to DB."""
     
     # Get event by event id

@@ -6,12 +6,6 @@ export EVENTBRITE_KEY="SINIF5SUACTUMOR3XLJOUVQW7PODZLR6DD745U334ZBD5DNIJG"
 export EVENTBRITE_SECRET="JKW3IQWTLJOTH7T2FS"
 export EVENTBRITE_TOKEN="HPUKCNXDXMR4NVEYB4HK"
 
-# Secrets for Mapbox app
-# Find at: https://account.mapbox.com/access-tokens/
-# Default public token being used
-# This file should never go into github!
-export MAPBOX_TOKEN="pk.eyJ1IjoidHJpbmJhciIsImEiOiJjanZ3emhpNXoxZW9kNDRwMWtzaWpwNm8xIn0.2201lSCmgIMWpQndN1igLg"
-
 # Secrets for Yelp app
 # Find these at: https://www.yelp.com/developers/v3/manage_app?
 # This file should never go into github!
