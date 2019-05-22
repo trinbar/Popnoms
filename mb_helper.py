@@ -4,6 +4,7 @@ import os
 
 import requests
 from model import Event, User, Search, db, connect_to_db
+from eb_helper import (get_events, get_venue_details)
 
 # Forward Mapbox geocoding URL and default Mapbox token
 MAPBOX_URL = "https://api.mapbox.com/geocoding/v5/mapbox.places/"
@@ -23,3 +24,12 @@ def set_map_center(location):
         center = feature["center"]
 
     return center
+
+
+def set_pins(events):
+    """Pins coordinates of events."""
+
+    venue_ids = []
+
+    for event in events:
+        venue_ids.append(event["venue_id"])
