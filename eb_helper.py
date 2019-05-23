@@ -4,15 +4,18 @@ from pprint import pformat
 import os
 
 import requests
+from flask import request
 from dateutil import parser
 import pytz
 from datetime import datetime
 from model import Event, User, Search, db, connect_to_db
+#make sure to run source secrets.sh whenever activating new virtualenv
+
 
 # Global variables: Eventbrite token and URL
 # Change to secrets when ready for GitHub!!!
 # EVENTBRITE_TOKEN = os.getenv('EVENTBRITE_TOKEN')
-EVENTBRITE_TOKEN = "HPUKCNXDXMR4NVEYB4HK"
+EVENTBRITE_TOKEN = os.environ.get('EVENTBRITE_TOKEN')
 EVENTBRITE_URL = "https://www.eventbriteapi.com/v3/"
 
 #### SHOULD I CREATE A HELPER FUNCTION OR KEEP IN THE REGISTER ROUTE?###
@@ -186,6 +189,27 @@ def get_venue_details(venue_id):
                      "city": city, "region": region, "latitude": latitude, "longitude":longitude}
 
     return venue_details
+
+def get_venue_coordinates(venue_id):
+    """Gets a venue coordinates for a list of venue_ids."""
+
+
+    headers = {'Authorization': 'Bearer ' + EVENTBRITE_TOKEN}
+
+    response = requests.get(EVENTBRITE_URL + f"venues/{venue_id}/", 
+            headers=headers, verify=True)
+
+    data = response.json()
+
+    # Get lat and long from the JSON response
+    latitude = float(data["address"]["latitude"])
+    longitude = float(data["address"]["longitude"])
+
+    #Create a list of coordinates tuple objects
+    coordinates = [longitude, latitude]
+
+    return coordinates
+
 
 def save_search_to_db(user_id, search_location):
     """Saves searches to DB based on user_id."""

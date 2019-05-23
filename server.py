@@ -7,8 +7,8 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import db, connect_to_db, User, Event, Search
 
-from eb_helper import (get_events, add_event_to_db, create_new_user, get_venue_details, save_search_to_db)
-from mb_helper import set_map_center
+from eb_helper import (get_events, add_event_to_db, create_new_user, get_venue_details, get_venue_coordinates, save_search_to_db)
+from mb_helper import (set_map_center, set_markers)
 
 import requests
 
@@ -118,8 +118,27 @@ def view_popups():
 
     #Obtain map center coordinates
     map_center = set_map_center(location)
-    
+    print("Map Center:", map_center)
 
+    #Obtain list of venue_ids of events
+    venue_ids = []
+    for event in events:
+        venue_id = event["venue_id"]
+        event["venue_id"] = venue_id
+        venue_ids.append(venue_id)
+
+    print("Venue ID List:", venue_ids)
+
+    #Obtain list of coordinates of events
+    coordinates_list = []
+
+    for venue_id in venue_ids:
+        coordinates = get_venue_coordinates(venue_id)
+
+        coordinates_list.append(coordinates)
+
+    print(coordinates_list)
+    
     #Get user_id from session and save search to db
     user_id = session.get("user_id")
     #If user in session
@@ -127,7 +146,7 @@ def view_popups():
     #     save_search_to_db(user_id=user_id, search_location=location)
 
     return render_template("view_popnoms.html", events=events, location=location,
-                           map_center=map_center)
+                           map_center=map_center, coordinates_list=coordinates_list)
 
 
 if __name__ == "__main__":

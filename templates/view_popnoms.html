@@ -26,48 +26,49 @@
       crossorigin="anonymous"></script>
 
   
-  <div id='map' style='width: 500px; height: 600px;'></div>
-    <script>
+    <div id='map' style='width: 500px; height: 600px;'></div>
+      <script>
+
 
       //Mapbox default accessToken
       mapboxgl.accessToken = 'pk.eyJ1IjoidHJpbmJhciIsImEiOiJjanZ3emhpNXoxZW9kNDRwMWtzaWpwNm8xIn0.2201lSCmgIMWpQndN1igLg';
 
       //Display map using map_center of location query
-      var map = new mapboxgl.Map({
+      const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
         center: {{ map_center }},
         zoom: 10
-        });
+      });
 
-      //Drops pin on event
-      map.on('load', function() {
-        map.loadImage('https://i.imgur.com/MK4NUzI.png', function(error, image) {
-            if (error) throw error;
-            map.addImage('pin', image);
-            map.addLayer({
-              "id": "points",
-              "type": "symbol",
-              "source": {
-                "type": "geojson",
-                "data": {
-                  "type": "FeatureCollection",
-                  "features": [{
-                    "type": "Feature",
-                    "geometry": {
-                      "type": "Point",
-                      "coordinates": {{ map_center }}
-                    }
-                  }]
-                }
-              },
-              "layout": {
-                "icon-image": "pin",
-                "icon-size": 0.5
-              }
-            });
-          });
-        });
+      const geojson = {
+        type: 'FeatureCollection',
+        features: [
+        {% for coordinates in coordinates_list %} {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: {{ coordinates }}
+          },
+        properties: {
+          title: 'Mapbox',
+          description: ''
+        }
+      },{% endfor %}
+      ]
+      };
+      console.log(geojson)
+
+      //add markers to map
+      geojson.features.forEach(function(marker) {
+        //create an HTML element for each feature
+        let el = document.createElement('div');
+        el.className = 'marker';
+        //make a marker for each feature and add to map
+        new mapboxgl.Marker(el)
+        .setLngLat(marker.geometry.coordinates)
+        .addTo(map);
+      });
 </script>
 
     </div>
