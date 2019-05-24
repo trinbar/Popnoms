@@ -71,23 +71,25 @@ class User(db.Model):
 
         return f"<User user_id={self.user_id} username={self.username} email={self.email}>"
 
-class Search(db.Model):
+class Bookmark(db.Model):
     """User on Popnoms website."""
 
-    __tablename__ = "searches"
+    __tablename__ = "bookmarks"
     
-    search_id = db.Column(db.Integer, autoincrement=True, primary_key=True,)
+    bookmark_id = db.Column(db.Integer, autoincrement=True, primary_key=True,)
+    bookmark_type = db.Column(db.String(50), nullable=False)
+    event_id = db.Column(db.Integer, db.ForeignKey('events.event_id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False,)
     timestamp = db.Column(db.DateTime, nullable=False,)
-    search_location = db.Column(db.String(75), nullable=False)
-
-    # Relational attributes with User and Event classes
-    # user = db.relationship("User", backref=db.backref("searches", order_by=search_id))
+    
+    # Relational attributes with Event and User classes
+    event = db.relationship("Event", backref=db.backref("bookmarks", order_by=bookmark_id))
+    user = db.relationship("User", backref=db.backref("bookmarks", order_by=bookmark_id))
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return f"<Search search_id={self.search_id} user_id={self.user_id} search_location={self.search_location}>"
+        return f"<Bookmark bookmark_id={self.bookmark_id} bookmark_type={self.bookmark_type} event_id={self.event_id} user_id={self.user_id}>"
 
 
 ##############################################################################

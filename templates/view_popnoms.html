@@ -11,8 +11,26 @@
     <h3>PopNoms in {{ location }}</h3>
       <ul class="events">
         {% for event in events %}
-          <li><a href="{{ event["eb_url"] }}">{{ event["name"] }}
-          </a></li>
+          <li><a href="{{ event["eb_url"] }}">
+            {{ event["name"] }}</a>
+            <button action="/bookmark" id="likeButton" class="btn btn-primary"><3
+            <script>
+              'use strict';
+
+              let likeButton = document.querySelector("#likeButton");
+
+              likeButton.addEventListener("click", function () {
+                if (likeButton.innerText === "<3") {
+                  likeButton.innerText = "</3";
+                } else {
+                  likeButton.innerText = "<3";
+                  }
+              });
+            </script>
+            </button>
+            <!-- add event listener to send event_id
+            input data and tell what route to go to -->
+        </li>
         {% endfor %}
       </ul>
 
@@ -29,7 +47,6 @@
     <div id='map' style='width: 500px; height: 600px;'></div>
       <script>
 
-
       //Mapbox default accessToken
       mapboxgl.accessToken = 'pk.eyJ1IjoidHJpbmJhciIsImEiOiJjanZ3emhpNXoxZW9kNDRwMWtzaWpwNm8xIn0.2201lSCmgIMWpQndN1igLg';
 
@@ -38,7 +55,7 @@
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
         center: {{ map_center }},
-        zoom: 10
+        zoom: 11
       });
 
       const geojson = {

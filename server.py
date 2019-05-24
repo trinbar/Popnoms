@@ -5,7 +5,7 @@
 from flask import Flask, render_template, request, flash, redirect, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import db, connect_to_db, User, Event, Search
+from model import db, connect_to_db, User, Event, Bookmark
 
 from eb_helper import (get_events, add_event_to_db, create_new_user, get_venue_details, get_venue_coordinates, save_search_to_db)
 from mb_helper import (set_map_center, set_markers)
@@ -106,7 +106,7 @@ def logout():
     return redirect("/")
 
 @app.route('/view_popnoms', methods=['GET','POST'])
-def view_popups():
+def view_popnoms():
     """Display popup events."""
 
     #Request.form.get results from homepage's search for
@@ -148,7 +148,23 @@ def view_popups():
     return render_template("view_popnoms.html", events=events, location=location,
                            map_center=map_center, coordinates_list=coordinates_list)
 
+@app.route('/bookmark', methods=['GET','POST'])
+def bookmark_event():
+    """Mark event as bookmarked and add to db."""
+    print("bookmarked!")
+    #Get like_button, event_id, and user_id from session
+    # like_button = session.get("likeButton")
+    # register_button = session.get("registerButton")
+    # event_id = session.get("event_id")
+    # user_id = session.get("user_id")
 
+    # #If event is liked, add event and user details to Liked table in db
+    # if like_button == True:
+    #     liked_event = add_event_to_db(event_id)
+    #     flash(f"You liked {event_name}.")
+    #     return redirect(f"/view_popnoms")
+    
+    
 if __name__ == "__main__":
     app.debug = True
     app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False

@@ -8,7 +8,7 @@ from flask import request
 from dateutil import parser
 import pytz
 from datetime import datetime
-from model import Event, User, Search, db, connect_to_db
+from model import Event, User, Bookmark, db, connect_to_db
 #make sure to run source secrets.sh whenever activating new virtualenv
 
 
