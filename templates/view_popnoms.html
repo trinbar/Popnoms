@@ -11,27 +11,17 @@
     <h3>PopNoms in {{ location }}</h3>
       <ul class="events">
         {% for event in events %}
-          <li><a href="{{ event["eb_url"] }}">
-            {{ event["name"] }}</a>
-            <button action="/bookmark" id="likeButton" class="btn btn-primary"><3
-            <script>
-              'use strict';
+          <li class="event-card"><a href="/popnom_details?event_id={{ event["event_id"]}}"><img src="{{ event["logo"]}}" style="width:60px;height:60px;border:0;"></a><br>
+            {{ event["name"] }}<br>
+            <span style="font-size: 65%;">{{ event["start_time"]}} to {{event["end_time"]}}</span>
+            <p>
+             
+          </p>
 
-              let likeButton = document.querySelector("#likeButton");
-
-              likeButton.addEventListener("click", function () {
-                if (likeButton.innerText === "<3") {
-                  likeButton.innerText = "</3";
-                } else {
-                  likeButton.innerText = "<3";
-                  }
-              });
-            </script>
-            </button>
             <!-- add event listener to send event_id
             input data and tell what route to go to -->
         </li>
-        {% endfor %}
+        ,{% endfor %}
       </ul>
 
   </div>
@@ -59,6 +49,7 @@
       });
 
       const geojson = {
+        id: 'popnoms',
         type: 'FeatureCollection',
         features: [
         {% for coordinates in coordinates_list %} {
@@ -69,7 +60,7 @@
           },
         properties: {
           title: 'Mapbox',
-          description: ''
+          description: 'description'
         }
       },{% endfor %}
       ]
@@ -85,6 +76,40 @@
         new mapboxgl.Marker(el)
         .setLngLat(marker.geometry.coordinates)
         .addTo(map);
+      });
+
+      // Create a popup, but don't add it to the map yet.
+      var popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false
+      });
+
+      map.on('mouseenter','popnoms', function(evt) {
+        map.getCanvas().style.cursor = 'pointer';
+
+        var coordinates = evt.features[0].geometry.coordinates.slice();
+        var description = evt.features[0].properties.description;
+
+        // Ensure that if the map is zoomed out such that multiple
+        // copies of the feature are visible, the popup appears
+        // over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+
+        // Populate the popup and set its coordinates
+        // based on the feature found.
+        popup.setLngLat(coordinates)
+        .setHTML(description)
+        .addTo(map);
+
+       });
+
+     
+
+      map.on('mouseleave','popnoms', function() {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
       });
 </script>
 

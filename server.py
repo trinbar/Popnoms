@@ -7,7 +7,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import db, connect_to_db, User, Event, Bookmark
 
-from eb_helper import (get_events, add_event_to_db, create_new_user, get_venue_details, get_venue_coordinates, save_search_to_db)
+from eb_helper import (get_events, get_event_details, create_new_user, get_venue_details, get_venue_coordinates, save_search_to_db)
 from mb_helper import (set_map_center, set_markers)
 
 import requests
@@ -146,12 +146,44 @@ def view_popnoms():
     #     save_search_to_db(user_id=user_id, search_location=location)
 
     return render_template("view_popnoms.html", events=events, location=location,
-                           map_center=map_center, coordinates_list=coordinates_list)
+                           map_center=map_center, coordinates_list=coordinates_list,
+                           user_id=user_id)
 
-@app.route('/bookmark', methods=['GET','POST'])
+
+@app.route('/popnom_details', methods=['GET','POST'])
+def view_popnom_details():
+    """Display popup event details."""
+
+    event_id = request.args.get("event_id")
+    print(event_id)
+
+    #get_event_details returns a json string
+    event = get_event_details(event_id)
+
+    #Check if user in session in order to bookmark event
+    # user_id = session.get('user_id')
+
+    # if user_id:
+    #     user_object = db.session.query(User).filter(User.user_id == user_id).one()
+    #     user_name = user_object.name
+    # else:
+    #     user_name = "Please log in to like or register this event."
+
+    return jsonify(event)
+
+
+@app.route('/bookmark', methods=['POST'])
 def bookmark_event():
     """Mark event as bookmarked and add to db."""
-    print("bookmarked!")
+
+    flash("bookmarked!!!!")
+
+    like_button = request.form.get("likeButton")
+    register_button = request.form.get("registerButton")
+
+    # if like_button == True:
+    #     flash("bookmarked!")
+    #     return redirect("/view_popnoms")
     #Get like_button, event_id, and user_id from session
     # like_button = session.get("likeButton")
     # register_button = session.get("registerButton")

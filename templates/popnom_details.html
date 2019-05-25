@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}PopNoms{% endblock %}
+
+{% block js %}
+    <script src="/static/popnomDetails.jsx" type="text/jsx"></script>
+    <script crossorigin src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+    <script crossorigin src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<div id="root"></div>
+
+    <script src="/static/popnomDetails.jsx" type="text/jsx"></script>
+    <script>
+        "use strict";
+
+        $.getJSON("/popnom_details", function {
+            console.log("success!");
+        })
+    </script>
+
+ <!-- <div class="row">
+
+//   <div class="col-xs-12 col-md-6">
+//     <h1>{{ name}}</h1>
+//         <p>{{ start_time }}{{ start_time_tz }} to {{ end_time}}{{ end_time_tz }}</p> 
+//         <p>{{ description}}</p>
+
+//         <p>{{ venue_name}}<br>
+//         {{ address}}</p>
+    
+//   <div class="col-xs-12 col-md-6">
+//     <img src="{{ event.logo }}" style="width:150px; height:150px;border:5px;"><br>
+    
+//     <a href="{{ eb_url }}" class="btn btn-primary ">Buy Tickets</a>
+
+//     </div> -->
+ </div>
+
+{% endblock %}

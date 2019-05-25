@@ -22,7 +22,7 @@ class Event(db.Model):
     # Define events attributes
 
     # Event information
-    event_id = db.Column(db.Integer, autoincrement=True, primary_key=True,)
+    event_id = db.Column(db.String(50), autoincrement=True, primary_key=True,)
     name = db.Column(db.String(100), nullable=False,)
     eb_url = db.Column(db.String(350), nullable=False,)
     logo = db.Column(db.String(350), nullable=True,)

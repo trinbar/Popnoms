@@ -104,14 +104,14 @@ def get_events(location, start_date_kw):
     # Returns a list of dictionaries for each event with event details
     return events
 
-def add_event_to_db(event_id):
-    """Gets details about a specific event by id, and adds event to DB."""
+def get_event_details(event_id):
+    """Gets details about a specific event by id"""
     
-    # Get event by event id
-    event = Event.query.get(event_id)
-    # If we already have the event in DB return event object
-    if event:
-        return event
+    # # Get event by event id
+    # event = Event.query.get(event_id)
+    # # If we already have the event in DB return event object
+    # if event:
+    #     return event
 
     # If not, make an API call
     headers = {'Authorization': 'Bearer ' + EVENTBRITE_TOKEN}
@@ -121,50 +121,52 @@ def add_event_to_db(event_id):
     data = response.json()
     # Get fields back from json response
 
-    name = data['name']['text']
-    description = data['description']['text']
-    eb_url = data['url']
-    # We will return the nicely formated start and end times
-    start_time = parse_datetime(data['start']['timezone'], data['start']['local'])
-    end_time = parse_datetime(data['end']['timezone'], data['end']['local'])
-    # We will pass timezone and local times to the front end so we can seed our events database with correct datetime format
-    start_time_tz = data['start']['timezone']
-    start_time_local = data['start']['local']
-    end_time_tz = data['end']['timezone']
-    end_time_local = data['end']['local']
+    # event_details = []
 
-    venue_id = data['venue_id']
-    logo = data['logo']
-    is_free = data['is_free']
+    # name = data['name']['text']
+    # description = data['description']['text']
+    # eb_url = data['url']
+    # # We will return the nicely formated start and end times
+    # start_time = parse_datetime(data['start']['timezone'], data['start']['local'])
+    # end_time = parse_datetime(data['end']['timezone'], data['end']['local'])
+    # # We will pass timezone and local times to the front end so we can seed our events database with correct datetime format
+    # start_time_tz = data['start']['timezone']
+    # start_time_local = data['start']['local']
+    # end_time_tz = data['end']['timezone']
+    # end_time_local = data['end']['local']
 
-    # Get details about a venue by id
-    venue_details = get_venue_details(venue_id)
+    # venue_id = data['venue_id']
+    # logo = data['logo']
+    # is_free = data['is_free']
 
-    address = venue_details["full_address"]
-    venue_name = venue_details["name"]
-    longitude = venue_details["longitude"]
-    latitude = venue_details["latitude"]
-    capacity = venue_details["capacity"]
+    # # Get details about a venue by id
+    # venue_details = get_venue_details(venue_id)
 
-    # Checks logo for url
-    if logo is not None:
-        logo = logo["original"]["url"]
+    # address = venue_details["full_address"]
+    # venue_name = venue_details["name"]
+    # # longitude = venue_details["longitude"]
+    # # latitude = venue_details["latitude"]
+    # # capacity = venue_details["capacity"]
+
+    # # Checks logo for url
+    # if logo is not None:
+    #     logo = logo["original"]["url"]
     
-    else:
-        logo = "https://www.123securityproducts.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/placeholder/default/Pho_Unavail_base.jpg"
+    # else:
+    #     logo = "https://www.123securityproducts.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/placeholder/default/Pho_Unavail_base.jpg"
     
 
- # Add event to table
-    event = Event(event_id=event_id, name=name, eb_url=eb_url, logo=logo, 
-        start_time=start_time, start_time_local=start_time_local, end_time=end_time,
-        end_time_local=end_time_local, venue_id=venue_id, venue_name=venue_name, 
-        address=address, latitude=latitude, longitude=longitude, capacity=capacity, 
-        is_free=is_free)
+ # # Add event to table
+ #    event = Event(event_id=event_id, name=name, eb_url=eb_url, logo=logo, 
+ #        start_time=start_time, start_time_local=start_time_local, end_time=end_time,
+ #        end_time_local=end_time_local, venue_id=venue_id, venue_name=venue_name, 
+ #        address=address, latitude=latitude, longitude=longitude, capacity=capacity, 
+ #        is_free=is_free, description=description)
 
-    db.session.add(event)
-    db.session.commit()
+ #    db.session.add(event)
+ #    db.session.commit()
 
-    return event
+    return data
 
 def get_venue_details(venue_id):
     """Gets information about a venue based on the venue id."""
@@ -200,6 +202,7 @@ def get_venue_coordinates(venue_id):
             headers=headers, verify=True)
 
     data = response.json()
+    print(data)
 
     # Get lat and long from the JSON response
     latitude = float(data["address"]["latitude"])
