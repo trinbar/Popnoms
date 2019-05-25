@@ -46,6 +46,11 @@ def parse_datetime(timezone, local_dt_str):
 
     return local_time
 
+def remove_non_ascii(text):
+    """Removes non ascii charecters from string."""
+
+    return ''.join(i for i in text if ord(i)<128)
+
 
 def get_events(location, start_date_kw):
     """Gets events from Evenbrite API based on location and dates."""
@@ -85,8 +90,8 @@ def get_events(location, start_date_kw):
         start_time = parse_datetime(start_timezone, start_time_local)
         end_time = parse_datetime(end_timezone, end_time_local)
         # Add event details to the dictionary
-        event_details["name"] = name
-        event_details["event_id"] = event_id
+        event_details["name"] = remove_non_ascii(name)
+        event_details["event_id"] = (event_id)
         event_details["start_time"] = start_time
         event_details["end_time"] = end_time
         event_details["eb_url"] = eb_url

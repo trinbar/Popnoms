@@ -49,20 +49,22 @@
       });
 
       const geojson = {
-        id: 'popnoms',
+        id: 'places',
         type: 'FeatureCollection',
         features: [
-        {% for coordinates in coordinates_list %} {
+        {% for coordinates in coordinates_list %}
+        {% for event in events %} {
           type: 'Feature',
-          geometry: {
+          marker: {
             type: 'Point',
-            coordinates: {{ coordinates }}
+            coordinates: {{ coordinates }},
+            event_name: "{{ event["name"]}}"
           },
         properties: {
           title: 'Mapbox',
-          description: 'description'
+          description: ""
         }
-      },{% endfor %}
+      },{% endfor %}{% endfor %}
       ]
       };
       console.log(geojson)
@@ -70,47 +72,20 @@
       //add markers to map
       geojson.features.forEach(function(marker) {
         //create an HTML element for each feature
+        let popup = new mapboxgl.Popup({ offset: 25})
+          .setText(marker.marker.event_name);
+
         let el = document.createElement('div');
         el.className = 'marker';
+  
         //make a marker for each feature and add to map
         new mapboxgl.Marker(el)
-        .setLngLat(marker.geometry.coordinates)
+        .setLngLat(marker.marker.coordinates)
+        .setPopup(popup)
         .addTo(map);
       });
 
-      // Create a popup, but don't add it to the map yet.
-      var popup = new mapboxgl.Popup({
-      closeButton: false,
-      closeOnClick: false
-      });
-
-      map.on('mouseenter','popnoms', function(evt) {
-        map.getCanvas().style.cursor = 'pointer';
-
-        var coordinates = evt.features[0].geometry.coordinates.slice();
-        var description = evt.features[0].properties.description;
-
-        // Ensure that if the map is zoomed out such that multiple
-        // copies of the feature are visible, the popup appears
-        // over the copy being pointed to.
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        }
-
-        // Populate the popup and set its coordinates
-        // based on the feature found.
-        popup.setLngLat(coordinates)
-        .setHTML(description)
-        .addTo(map);
-
-       });
-
-     
-
-      map.on('mouseleave','popnoms', function() {
-        map.getCanvas().style.cursor = '';
-        popup.remove();
-      });
+      
 </script>
 
     </div>
