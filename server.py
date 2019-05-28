@@ -158,7 +158,8 @@ def view_popnom_details():
     print(event_id)
 
     #get_event_details returns a json string
-    event = get_event_details(event_id)
+    details = get_event_details(event_id)
+    print(details)
 
     #Check if user in session in order to bookmark event
     # user_id = session.get('user_id')
@@ -169,7 +170,7 @@ def view_popnom_details():
     # else:
     #     user_name = "Please log in to like or register this event."
 
-    return jsonify(event)
+    return render_template("popnom_details.html", details=details)
 
 
 @app.route('/bookmark', methods=['POST'])

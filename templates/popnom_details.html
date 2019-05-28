@@ -2,20 +2,23 @@
 
 {% block title %}PopNoms{% endblock %}
 
-{% block js %}
+<!-- {% block js %}
   
-{% endblock %}
+{% endblock %} -->
 
 {% block content %}
 
-<div id="popnom-name"></div>
+<!-- Possible use of JS and React, do not delete until design period -->
 
-<div id="root"></div>
+    <!-- <div id="popnom-name"></div>
 
-<script src="https://unpkg.com/react@16/umd/react.development.js"   crossorigin></script>
-  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <div id="root"></div> -->
 
-    <!-- <script>
+        <!-- script src="https://unpkg.com/react@16/umd/react.development.js"   crossorigin></script>
+        <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+        <script src="/static/popnomDetails.jsx" type="text/jsx"></script> -->
+
+   <!--  <script>
         "use strict";
 
         let event_detail = JSON.parse(event);
@@ -36,23 +39,33 @@
 
         document.write(event_detail["name"]["text"] + "<br>");
     </script> -->
+<div class ="row" style="margin:20px padding:10px;">
+    <img src="{{ details["logo"] }}" style="width:100px height:75px;">
+</div>
 
- <!-- <div class="row">
+ <div class="row" style="margin:20px padding:10px;">
 
-//   <div class="col-xs-12 col-md-6">
-//     <h1>{{ name}}</h1>
-//         <p>{{ start_time }}{{ start_time_tz }} to {{ end_time}}{{ end_time_tz }}</p> 
-//         <p>{{ description}}</p>
+   <div class="col-xs-12 col-md-6">
 
-//         <p>{{ venue_name}}<br>
-//         {{ address}}</p>
-    
-//   <div class="col-xs-12 col-md-6">
-//     <img src="{{ event.logo }}" style="width:150px; height:150px;border:5px;"><br>
-    
-//     <a href="{{ eb_url }}" class="btn btn-primary ">Buy Tickets</a>
+    <h2> {{ details["name"] }}</h2>
 
-//     </div> -->
+    <p>{{ details["description"] }}</p>
+    <p>{{ details["start_time"]}} {{ details["start_time_tz"] }} to {{ details["end_time"]}} {{ details["end_time_tz"] }}</p>
+</div>
+   <div class="col-xs-12 col-md-6">
+    <br><br><br>
+
+        <a href="/bookmark" id="likeButton" class="btn btn-primary"><3</a>
+
+        <script>
+            "use strict";
+
+            //write JS here to change the buttons upon click
+
+        <a href="/bookmark" id="registerButton" class="btn btn-primary">I'm Going</a>
+
+         <a href="{{ details["eb_url"] }}" class="btn btn-primary ">Buy Tickets</a>
+     </div>
  </div>
-
+ 
 {% endblock %}

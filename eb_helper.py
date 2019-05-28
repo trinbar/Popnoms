@@ -91,7 +91,7 @@ def get_events(location, start_date_kw):
         end_time = parse_datetime(end_timezone, end_time_local)
         # Add event details to the dictionary
         event_details["name"] = remove_non_ascii(name)
-        event_details["event_id"] = (event_id)
+        event_details["event_id"] = event_id
         event_details["start_time"] = start_time
         event_details["end_time"] = end_time
         event_details["eb_url"] = eb_url
@@ -126,42 +126,45 @@ def get_event_details(event_id):
     data = response.json()
     # Get fields back from json response
 
-    # event_details = []
+    event_details = []
 
-    # name = data['name']['text']
-    # description = data['description']['text']
-    # eb_url = data['url']
-    # # We will return the nicely formated start and end times
-    # start_time = parse_datetime(data['start']['timezone'], data['start']['local'])
-    # end_time = parse_datetime(data['end']['timezone'], data['end']['local'])
-    # # We will pass timezone and local times to the front end so we can seed our events database with correct datetime format
-    # start_time_tz = data['start']['timezone']
-    # start_time_local = data['start']['local']
-    # end_time_tz = data['end']['timezone']
-    # end_time_local = data['end']['local']
+    name = data['name']['text']
+    description = data['description']['text']
+    eb_url = data['url']
+    logo = data['logo']
+    # We will return the nicely formated start and end times
+    start_time = parse_datetime(data['start']['timezone'], data['start']['local'])
+    end_time = parse_datetime(data['end']['timezone'], data['end']['local'])
+    # We will pass timezone and local times to the front end so we can seed our events database with correct datetime format
+    start_time_tz = data['start']['timezone']
+    start_time_local = data['start']['local']
+    end_time_tz = data['end']['timezone']
+    end_time_local = data['end']['local']
 
-    # venue_id = data['venue_id']
-    # logo = data['logo']
-    # is_free = data['is_free']
+    venue_id = data['venue_id']
+    is_free = data['is_free']
 
-    # # Get details about a venue by id
-    # venue_details = get_venue_details(venue_id)
+    # Get details about a venue by id
+    venue_details = get_venue_details(venue_id)
 
-    # address = venue_details["full_address"]
-    # venue_name = venue_details["name"]
-    # # longitude = venue_details["longitude"]
-    # # latitude = venue_details["latitude"]
-    # # capacity = venue_details["capacity"]
+    address = venue_details["full_address"]
+    venue_name = venue_details["name"]
+    # longitude = venue_details["longitude"]
+    # latitude = venue_details["latitude"]
+    # capacity = venue_details["capacity"]
 
-    # # Checks logo for url
-    # if logo is not None:
-    #     logo = logo["original"]["url"]
+    # Checks logo for url
+    if logo is not None:
+        logo = logo["original"]["url"]
     
-    # else:
-    #     logo = "https://www.123securityproducts.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/placeholder/default/Pho_Unavail_base.jpg"
+    else:
+        logo = "https://www.123securityproducts.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/placeholder/default/Pho_Unavail_base.jpg"
     
-
- # # Add event to table
+    event_details = {"name": name, "description": description, "eb_url": eb_url,
+    "start_time": start_time, "start_time_local": start_time_local, "start_time_tz": start_time_tz,
+    "end_time": end_time, "end_time_local": end_time_local, "end_time_tz": end_time_tz, "logo": logo,
+    "address": address, "venue_name": venue_name}
+ # # Add event to table - don't want to do this yet. save in separate function
  #    event = Event(event_id=event_id, name=name, eb_url=eb_url, logo=logo, 
  #        start_time=start_time, start_time_local=start_time_local, end_time=end_time,
  #        end_time_local=end_time_local, venue_id=venue_id, venue_name=venue_name, 
@@ -171,7 +174,7 @@ def get_event_details(event_id):
  #    db.session.add(event)
  #    db.session.commit()
 
-    return data
+    return event_details
 
 def get_venue_details(venue_id):
     """Gets information about a venue based on the venue id."""
