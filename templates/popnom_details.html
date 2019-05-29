@@ -40,7 +40,7 @@
         document.write(event_detail["name"]["text"] + "<br>");
     </script> -->
 <div class ="row" style="margin:20px padding:10px;">
-    <img src="{{ details["logo"] }}" style="width:100px height:75px;">
+    <img src="{{ details["logo"] }}" style="width:8px height:5px;">
 </div>
 
  <div class="row" style="margin:20px padding:10px;">
@@ -50,19 +50,55 @@
     <h2> {{ details["name"] }}</h2>
 
     <p>{{ details["description"] }}</p>
-    <p>{{ details["start_time"]}} {{ details["start_time_tz"] }} to {{ details["end_time"]}} {{ details["end_time_tz"] }}</p>
+    <p>{{ details["start_time"]}} to {{ details["end_time"]}} {{ details["end_time_tz"] }}</p>
 </div>
-   <div class="col-xs-12 col-md-6">
+   <div class="col-xs-12 col-md-6" id="buttons">
     <br><br><br>
 
-        <a href="/bookmark" id="likeButton" class="btn btn-primary"><3</a>
+        <form action="/bookmark" method="POST">
+        
+        <button class="btn btn-primary" type="likeButton" name="likeButton" status="unliked"><3</button>
+        <input type="hidden" name="likeEventId" value="{{ details["event_id"] }}">
 
-        <script>
+            <script>
             "use strict";
 
-            //write JS here to change the buttons upon click
+            let likeButton = document.querySelector('#likeButton');
+            let eventId = document.querySelector('#likeEventId');
 
-        <a href="/bookmark" id="registerButton" class="btn btn-primary">I'm Going</a>
+            likeButton.addEventListener("click", function () {
+                if (likeButton.innerText === "<3") {
+                    likeButton.innerText = "</3";
+                    likeButton.setAttribute("status", "liked");
+                } else {
+                    likeButton.innerText = "<3";
+                    likeButton.setAttribute("status", "unliked");
+                    eventId.setAttribute("value","");
+                }
+            });
+
+            </script>
+        
+        <button class="btn btn-primary" type="registerButton" name="registerButton" status="notGoing" data-eventid="{{ details["event_id"]}}">Not going</button>
+         <input type="hidden" name="regEventId" value="{{ details["event_id"] }}">
+
+            <script>
+            "use strict";
+
+            let registerButton = document.querySelector('#registerButton');
+
+            registerButton.addEventListener("click", function () {
+                if (registerButton.innerText === "Not going") {
+                    registerButton.innerText = "Going";
+                    registerButton.setAttribute("status", "going");
+                } else {
+                    registerButton.innerText = "Not going";
+                    registerButton.setAttribute("status", "notGoing");
+                }
+            });
+
+            </script>
+        </form>
 
          <a href="{{ details["eb_url"] }}" class="btn btn-primary ">Buy Tickets</a>
      </div>

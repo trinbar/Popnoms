@@ -25,27 +25,22 @@ class Event(db.Model):
     event_id = db.Column(db.String(50), autoincrement=True, primary_key=True,)
     name = db.Column(db.String(100), nullable=False,)
     eb_url = db.Column(db.String(350), nullable=False,)
-    logo = db.Column(db.String(350), nullable=True,)
-
+  
     # Time and Location
     start_time = db.Column(db.DateTime, nullable=False,)
     start_time_local = db.Column(db.DateTime, nullable=False,)
     end_time = db.Column(db.DateTime, nullable=True,)
-    start_time_local = db.Column(db.DateTime, nullable=True,)
+    end_time_local = db.Column(db.DateTime, nullable=True,)
 
-    venue_id = db.Column(db.Integer, nullable=False,)
-    venue_name = db.Column(db.String(100), nullable=False,)
-    address = db.Column(db.String(100), nullable=False,)
-    latitude = db.Column(db.Float, nullable=False,)
-    longitude = db.Column(db.Float, nullable=False,)
+    venue_id = db.Column(db.String(50), nullable=False,)
+    # venue_name = db.Column(db.String(100), nullable=False,)
+    # address = db.Column(db.String(100), nullable=False,)
+    # latitude = db.Column(db.Float, nullable=False,)
+    # longitude = db.Column(db.Float, nullable=False,)
     
 
     # Relational attribute with User class
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False,)
-
-    # Define 'nice-to-have' attributes
-    capacity = db.Column(db.Integer, nullable=True,)
-    is_free = db.Column(db.Boolean, nullable=True,)
 
     # Define relationship to user
     user = db.relationship("User", backref=db.backref("events", order_by=event_id))
@@ -54,7 +49,7 @@ class Event(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return f"<Event event_id={self.event_id} name={self.name}> summary={self.summary}>"
+        return f"<Event event_id={self.event_id} name={self.name}>"
 
 class User(db.Model):
     """User on Popnoms website."""
@@ -71,6 +66,7 @@ class User(db.Model):
 
         return f"<User user_id={self.user_id} username={self.username} email={self.email}>"
 
+#Unsure if I need a bookmark class, could be done with just Event and User tables
 class Bookmark(db.Model):
     """User on Popnoms website."""
 

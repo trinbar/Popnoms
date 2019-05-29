@@ -7,7 +7,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import db, connect_to_db, User, Event, Bookmark
 
-from eb_helper import (get_events, get_event_details, create_new_user, get_venue_details, get_venue_coordinates, save_search_to_db)
+from eb_helper import (get_events, get_event_details, create_new_user, get_venue_details, get_venue_coordinates, save_search_to_db, add_event_to_db)
 from mb_helper import (set_map_center, set_markers)
 
 import requests
@@ -161,8 +161,15 @@ def view_popnom_details():
     details = get_event_details(event_id)
     print(details)
 
-    #Check if user in session in order to bookmark event
-    # user_id = session.get('user_id')
+    return render_template("popnom_details.html", details=details)
+
+
+@app.route('/bookmark', methods=['GET','POST'])
+def bookmark_event():
+    """Mark event as bookmarked and add to db."""
+
+    # Check if user in session in order to bookmark event
+    user_id = session.get('user_id')
 
     # if user_id:
     #     user_object = db.session.query(User).filter(User.user_id == user_id).one()
@@ -170,32 +177,11 @@ def view_popnom_details():
     # else:
     #     user_name = "Please log in to like or register this event."
 
-    return render_template("popnom_details.html", details=details)
+    # Get the likeButton 
+    event_id = request.form["likeEventId"]
 
-
-@app.route('/bookmark', methods=['POST'])
-def bookmark_event():
-    """Mark event as bookmarked and add to db."""
-
-    flash("bookmarked!!!!")
-
-    like_button = request.form.get("likeButton")
-    register_button = request.form.get("registerButton")
-
-    # if like_button == True:
-    #     flash("bookmarked!")
-    #     return redirect("/view_popnoms")
-    #Get like_button, event_id, and user_id from session
-    # like_button = session.get("likeButton")
-    # register_button = session.get("registerButton")
-    # event_id = session.get("event_id")
-    # user_id = session.get("user_id")
-
-    # #If event is liked, add event and user details to Liked table in db
-    # if like_button == True:
-    #     liked_event = add_event_to_db(event_id)
-    #     flash(f"You liked {event_name}.")
-    #     return redirect(f"/view_popnoms")
+    flash(f"You liked {like_event_id}.")
+    return add_event_to_db(event_id, user_id)
     
     
 if __name__ == "__main__":

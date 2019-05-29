@@ -9,6 +9,8 @@ from dateutil import parser
 import pytz
 from datetime import datetime
 from model import Event, User, Bookmark, db, connect_to_db
+
+
 #make sure to run source secrets.sh whenever activating new virtualenv
 
 
@@ -128,6 +130,7 @@ def get_event_details(event_id):
 
     event_details = []
 
+    event_id = event_id
     name = data['name']['text']
     description = data['description']['text']
     eb_url = data['url']
@@ -142,7 +145,6 @@ def get_event_details(event_id):
     end_time_local = data['end']['local']
 
     venue_id = data['venue_id']
-    is_free = data['is_free']
 
     # Get details about a venue by id
     venue_details = get_venue_details(venue_id)
@@ -160,10 +162,10 @@ def get_event_details(event_id):
     else:
         logo = "https://www.123securityproducts.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/placeholder/default/Pho_Unavail_base.jpg"
     
-    event_details = {"name": name, "description": description, "eb_url": eb_url,
+    event_details = {"name": name, "event_id": event_id, "description": description, "eb_url": eb_url,
     "start_time": start_time, "start_time_local": start_time_local, "start_time_tz": start_time_tz,
     "end_time": end_time, "end_time_local": end_time_local, "end_time_tz": end_time_tz, "logo": logo,
-    "address": address, "venue_name": venue_name}
+    "address": address, "venue_id": venue_id, "venue_name": venue_name}
  # # Add event to table - don't want to do this yet. save in separate function
  #    event = Event(event_id=event_id, name=name, eb_url=eb_url, logo=logo, 
  #        start_time=start_time, start_time_local=start_time_local, end_time=end_time,
@@ -175,6 +177,48 @@ def get_event_details(event_id):
  #    db.session.commit()
 
     return event_details
+
+def add_event_to_db(event_id, user_id):
+    """Adds liked event to database."""
+
+    details = get_event_details(event_id)
+    print(details)
+
+    user_id = user_id
+    event_id = event_id
+    name = details['name']
+    description = details['description']
+    eb_url = details['eb_url']
+    logo = details['logo']
+    # We will return the nicely formated start and end times
+    start_time = details['start_time']
+    end_time = details['end_time']
+    # We will pass timezone and local times to the front end so we can seed our events database with correct datetime format
+    start_time_tz = details['start_time_tz']
+    start_time_local = details['start_time_local']
+    end_time_tz = details['end_time_tz']
+    end_time_local = details['end_time_local']
+
+    venue_id = details['venue_id']
+
+    # Get details about a venue by id
+    # venue_details = get_venue_details(venue_id)
+
+    # address = venue_details["full_address"]
+    # venue_name = venue_details["name"]
+    # longitude = venue_details["longitude"]
+    # latitude = venue_details["latitude"]
+
+
+    # Add event to table
+    event = Event(event_id=event_id, name=name, eb_url=eb_url, 
+        start_time=start_time, start_time_local=start_time_local, end_time=end_time,
+        end_time_local=end_time_local, venue_id=venue_id, user_id=user_id)
+
+    db.session.add(event)
+    db.session.commit()
+
+    return event
 
 def get_venue_details(venue_id):
     """Gets information about a venue based on the venue id."""
