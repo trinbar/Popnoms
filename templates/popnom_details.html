@@ -55,30 +55,31 @@
    <div class="col-xs-12 col-md-6" id="buttons">
     <br><br><br>
 
-        <form action="/bookmark" method="POST">
+        <form action="/heart" method="POST">
         
-        <button class="btn btn-primary" type="likeButton" name="likeButton" status="unliked"><3</button>
-        <input type="hidden" name="likeEventId" value="{{ details["event_id"] }}">
+        <button class="btn btn-primary" type="heartButton" name="heartButton" status="unhearted"><3</button>
+        <input type="hidden" name="heartEventId" value="{{ details["event_id"] }}">
 
             <script>
             "use strict";
 
-            let likeButton = document.querySelector('#likeButton');
-            let eventId = document.querySelector('#likeEventId');
+            let heartButton = document.querySelector('#heartButton');
+            let eventId = document.querySelector('#heartEventId');
 
-            likeButton.addEventListener("click", function () {
-                if (likeButton.innerText === "<3") {
-                    likeButton.innerText = "</3";
-                    likeButton.setAttribute("status", "liked");
+            heartButton.addEventListener("click", function () {
+                if (heartButton.innerText === "<3") {
+                    heartButton.innerText = "</3";
+                    heartButton.setAttribute("status", "hearted");
                 } else {
-                    likeButton.innerText = "<3";
-                    likeButton.setAttribute("status", "unliked");
+                    heartButton.innerText = "<3";
+                    heartButton.setAttribute("status", "unhearted");
                     eventId.setAttribute("value","");
                 }
             });
 
             </script>
-        
+        </form>
+
         <button class="btn btn-primary" type="registerButton" name="registerButton" status="notGoing" data-eventid="{{ details["event_id"]}}">Not going</button>
          <input type="hidden" name="regEventId" value="{{ details["event_id"] }}">
 

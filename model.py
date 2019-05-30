@@ -1,6 +1,8 @@
 """Models and database functions for PopNoms project."""
 from flask_sqlalchemy import SQLAlchemy
 from collections import defaultdict
+from datetime import datetime
+from dateutil import parser
 
 # This is the connection to the PostgreSQL database; we're getting this through
 # the Flask-SQLAlchemy helper library. On this, we can find the `session`
@@ -14,6 +16,7 @@ db = SQLAlchemy()
 ##############################################################################
 # Model definitions
 
+#May not need this Event, can just call event details from API
 class Event(db.Model):
     """Event of Popnoms website."""
 
@@ -22,14 +25,12 @@ class Event(db.Model):
     # Define events attributes
 
     # Event information
-    event_id = db.Column(db.String(50), autoincrement=True, primary_key=True,)
+    event_id = db.Column(db.String(50), primary_key=True,)
     name = db.Column(db.String(100), nullable=False,)
     eb_url = db.Column(db.String(350), nullable=False,)
   
     # Time and Location
-    start_time = db.Column(db.DateTime, nullable=False,)
     start_time_local = db.Column(db.DateTime, nullable=False,)
-    end_time = db.Column(db.DateTime, nullable=True,)
     end_time_local = db.Column(db.DateTime, nullable=True,)
 
     venue_id = db.Column(db.String(50), nullable=False,)
@@ -66,26 +67,25 @@ class User(db.Model):
 
         return f"<User user_id={self.user_id} username={self.username} email={self.email}>"
 
-#Unsure if I need a bookmark class, could be done with just Event and User tables
-class Bookmark(db.Model):
+
+class Heart(db.Model):
     """User on Popnoms website."""
 
-    __tablename__ = "bookmarks"
+    __tablename__ = "hearts"
     
-    bookmark_id = db.Column(db.Integer, autoincrement=True, primary_key=True,)
-    bookmark_type = db.Column(db.String(50), nullable=False)
-    event_id = db.Column(db.Integer, db.ForeignKey('events.event_id'), nullable=False)
+    heart_id = db.Column(db.Integer, autoincrement=True, primary_key=True,)
+    #event_id is a string because that is the datatype in the API
+    event_id = db.Column(db.String, unique=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False,)
     timestamp = db.Column(db.DateTime, nullable=False,)
     
-    # Relational attributes with Event and User classes
-    event = db.relationship("Event", backref=db.backref("bookmarks", order_by=bookmark_id))
-    user = db.relationship("User", backref=db.backref("bookmarks", order_by=bookmark_id))
+    # Relational attributes with User class
+    user = db.relationship("User", backref=db.backref("hearts", order_by=heart_id))
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return f"<Bookmark bookmark_id={self.bookmark_id} bookmark_type={self.bookmark_type} event_id={self.event_id} user_id={self.user_id}>"
+        return f"<Heart heart_id={self.heart_id} event_id={self.event_id} user_id={self.user_id}>"
 
 
 ##############################################################################
@@ -97,6 +97,7 @@ def connect_to_db(app):
     # Configure to use our PostgreSQL database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///popnoms'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)
 
@@ -107,4 +108,5 @@ if __name__ == "__main__":
 
     from server import app
     connect_to_db(app)
+    db.create_all()
     print("Connected to DB.")

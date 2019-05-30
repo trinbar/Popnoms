@@ -52,19 +52,18 @@
         id: 'places',
         type: 'FeatureCollection',
         features: [
-        {% for coordinates in coordinates_list %}
         {% for event in events %} {
           type: 'Feature',
           marker: {
             type: 'Point',
-            coordinates: {{ coordinates }},
-            event_name: "{{ event["name"]}}"
+            coordinates: {{ coordinates_list[loop.index0] }},
+            event_name: "{{ event.name}}"
           },
         properties: {
           title: 'Mapbox',
           description: ""
         }
-      },{% endfor %}{% endfor %}
+      },{% endfor %}
       ]
       };
       console.log(geojson)

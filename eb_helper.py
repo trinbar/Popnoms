@@ -8,7 +8,7 @@ from flask import request
 from dateutil import parser
 import pytz
 from datetime import datetime
-from model import Event, User, Bookmark, db, connect_to_db
+from model import Event, User, Heart, db, connect_to_db
 
 
 #make sure to run source secrets.sh whenever activating new virtualenv
@@ -121,6 +121,7 @@ def get_event_details(event_id):
     #     return event
 
     # If not, make an API call
+
     headers = {'Authorization': 'Bearer ' + EVENTBRITE_TOKEN}
 
     response = requests.get(EVENTBRITE_URL + f"events/{event_id}/", headers=headers, verify=True)
@@ -128,9 +129,6 @@ def get_event_details(event_id):
     data = response.json()
     # Get fields back from json response
 
-    event_details = []
-
-    event_id = event_id
     name = data['name']['text']
     description = data['description']['text']
     eb_url = data['url']
@@ -178,47 +176,23 @@ def get_event_details(event_id):
 
     return event_details
 
-def add_event_to_db(event_id, user_id):
+def add_heart(event_id, user):
     """Adds liked event to database."""
 
-    details = get_event_details(event_id)
-    print(details)
+    #Can pass in user and event object
 
-    user_id = user_id
-    event_id = event_id
-    name = details['name']
-    description = details['description']
-    eb_url = details['eb_url']
-    logo = details['logo']
-    # We will return the nicely formated start and end times
-    start_time = details['start_time']
-    end_time = details['end_time']
-    # We will pass timezone and local times to the front end so we can seed our events database with correct datetime format
-    start_time_tz = details['start_time_tz']
-    start_time_local = details['start_time_local']
-    end_time_tz = details['end_time_tz']
-    end_time_local = details['end_time_local']
+    print(f"eb_helper {event_id}")
+    print(f"eb_helper {user}")
+    
 
-    venue_id = details['venue_id']
-
-    # Get details about a venue by id
-    # venue_details = get_venue_details(venue_id)
-
-    # address = venue_details["full_address"]
-    # venue_name = venue_details["name"]
-    # longitude = venue_details["longitude"]
-    # latitude = venue_details["latitude"]
-
+    timestamp = datetime.now()
+    print(f"timestamp {timestamp}")
 
     # Add event to table
-    event = Event(event_id=event_id, name=name, eb_url=eb_url, 
-        start_time=start_time, start_time_local=start_time_local, end_time=end_time,
-        end_time_local=end_time_local, venue_id=venue_id, user_id=user_id)
+    heart = Heart(event_id=event_id, user=user, timestamp=timestamp)
 
-    db.session.add(event)
+    db.session.add(heart)
     db.session.commit()
-
-    return event
 
 def get_venue_details(venue_id):
     """Gets information about a venue based on the venue id."""
@@ -266,15 +240,12 @@ def get_venue_coordinates(venue_id):
     return coordinates
 
 
-def save_search_to_db(user_id, search_location):
-    """Saves searches to DB based on user_id."""
+if __name__ == "__main__":
+    # As a convenience, if we run this module interactively, it will leave
+    # you in a state of being able to work with the database directly.
 
-    timestamp = datetime.now()
-
-    new_search = Search(user_id=user_id, timestamp=timestamp, search_location=search_location)
-
-    db.session.add(new_search)
-    db.session.commit()
-
+    from server import app
+    connect_to_db(app)
+    print("Connected to DB.")
 
 

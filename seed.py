@@ -3,7 +3,7 @@
 # Import os so that we can create db
 import os
 from server import app
-from model import Event, User, Search, db, connect_to_db
+from model import Event, User, Heart, db, connect_to_db
 
 def load_users():
     """Seed fake users into jams db."""

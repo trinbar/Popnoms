@@ -2,12 +2,12 @@
 
 # from jinja2 import StrictUndefined
 
-from flask import Flask, render_template, request, flash, redirect, session, jsonify
+from flask import Flask, render_template, request, flash, redirect, session, jsonify, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import db, connect_to_db, User, Event, Bookmark
+from model import db, connect_to_db, User, Event, Heart
 
-from eb_helper import (get_events, get_event_details, create_new_user, get_venue_details, get_venue_coordinates, save_search_to_db, add_event_to_db)
+from eb_helper import (get_events, get_event_details, create_new_user, get_venue_details, get_venue_coordinates, add_heart)
 from mb_helper import (set_map_center, set_markers)
 
 import requests
@@ -113,7 +113,6 @@ def view_popnoms():
     location = request.form["location"]
     start_date_kw = request.form["date_kw"]
 
-
     events = get_events(location, start_date_kw)
 
     #Obtain map center coordinates
@@ -136,8 +135,6 @@ def view_popnoms():
         coordinates = get_venue_coordinates(venue_id)
 
         coordinates_list.append(coordinates)
-
-    print(coordinates_list)
     
     #Get user_id from session and save search to db
     user_id = session.get("user_id")
@@ -155,34 +152,45 @@ def view_popnom_details():
     """Display popup event details."""
 
     event_id = request.args.get("event_id")
-    print(event_id)
 
     #get_event_details returns a json string
     details = get_event_details(event_id)
-    print(details)
 
     return render_template("popnom_details.html", details=details)
 
 
-@app.route('/bookmark', methods=['GET','POST'])
-def bookmark_event():
-    """Mark event as bookmarked and add to db."""
+@app.route('/heart', methods=['POST'])
+def heart_event():
+    """Mark event as hearted and add to db."""
 
-    # Check if user in session in order to bookmark event
+    # Check if user in session in order to heart event
+    # Maybe do a comprehension from lines 168-173
     user_id = session.get('user_id')
 
-    # if user_id:
-    #     user_object = db.session.query(User).filter(User.user_id == user_id).one()
-    #     user_name = user_object.name
-    # else:
-    #     user_name = "Please log in to like or register this event."
+    if user_id:
+        user = User.query.get(user_id)
+         # Get the heartButton 
 
-    # Get the likeButton 
-    event_id = request.form["likeEventId"]
+    # handle both the hearted and unhearted statuses     
+        event_id = request.form["heartEventId"]
 
-    flash(f"You liked {like_event_id}.")
-    return add_event_to_db(event_id, user_id)
-    
+        print(f"server {event_id}")
+        print(f"server {user_id}")
+
+        status = request.form('status')
+
+        #Use SQLAlchemy to check if user has already hearted this event
+        add_heart(event_id, user)
+        flash(f"You hearted this event.")
+        return("hello")
+
+    else: 
+        flash(f"Please log in to heart this event.")
+        return("hello")
+
+# Can leave in a separate route or include in /popnom_details route,
+# returning render template as above
+
     
 if __name__ == "__main__":
     app.debug = True
