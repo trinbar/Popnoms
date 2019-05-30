@@ -3,7 +3,7 @@
 import os
 
 import requests
-from model import Event, User, Heart, db, connect_to_db
+from model import Event, User, Heart, Attending, db, connect_to_db
 from eb_helper import (get_events, get_venue_details)
 from mapbox import Geocoder
 

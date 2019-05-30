@@ -70,31 +70,36 @@
                 if (heartButton.innerText === "<3") {
                     heartButton.innerText = "</3";
                     heartButton.setAttribute("status", "hearted");
+                    // $.post('where youwant to go',heartButton.attr('status');
                 } else {
                     heartButton.innerText = "<3";
                     heartButton.setAttribute("status", "unhearted");
                     eventId.setAttribute("value","");
+                    // $.post('same place as above', "unh)
+                    //     first = '/routename'
+                    //     second = {'status'}
                 }
             });
 
             </script>
         </form>
+        <form action="/attend" method="POST">
 
-        <button class="btn btn-primary" type="registerButton" name="registerButton" status="notGoing" data-eventid="{{ details["event_id"]}}">Not going</button>
-         <input type="hidden" name="regEventId" value="{{ details["event_id"] }}">
+        <button class="btn btn-primary" type="attendButton" name="attendButton" status="notAttending" data-eventid="{{ details["event_id"]}}">Not going</button>
+         <input type="hidden" name="attendEventId" value="{{ details["event_id"] }}">
 
             <script>
             "use strict";
 
-            let registerButton = document.querySelector('#registerButton');
+            let attendButton = document.querySelector('#attendButton');
 
-            registerButton.addEventListener("click", function () {
-                if (registerButton.innerText === "Not going") {
-                    registerButton.innerText = "Going";
-                    registerButton.setAttribute("status", "going");
+            attendButton.addEventListener("click", function () {
+                if (attendButton.innerText === "Not going") {
+                    attendButton.innerText = "Going";
+                    attendButton.setAttribute("status", "going");
                 } else {
-                    registerButton.innerText = "Not going";
-                    registerButton.setAttribute("status", "notGoing");
+                    attendButton.innerText = "Not going";
+                    attendButton.setAttribute("status", "notGoing");
                 }
             });
 

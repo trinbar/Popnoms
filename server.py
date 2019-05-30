@@ -5,9 +5,9 @@
 from flask import Flask, render_template, request, flash, redirect, session, jsonify, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import db, connect_to_db, User, Event, Heart
+from model import db, connect_to_db, User, Event, Heart, Attending
 
-from eb_helper import (get_events, get_event_details, create_new_user, get_venue_details, get_venue_coordinates, add_heart)
+from eb_helper import (get_events, get_event_details, create_new_user, get_venue_details, get_venue_coordinates, add_heart, add_attend)
 from mb_helper import (set_map_center, set_markers)
 
 import requests
@@ -135,7 +135,8 @@ def view_popnoms():
         coordinates = get_venue_coordinates(venue_id)
 
         coordinates_list.append(coordinates)
-    
+
+    print(coordinates_list)
     #Get user_id from session and save search to db
     user_id = session.get("user_id")
     #If user in session
@@ -171,25 +172,38 @@ def heart_event():
         user = User.query.get(user_id)
          # Get the heartButton 
 
-    # handle both the hearted and unhearted statuses     
+    # handle both the hearted and unhearted statuses 
+
         event_id = request.form["heartEventId"]
 
-        print(f"server {event_id}")
-        print(f"server {user_id}")
-
-        status = request.form('status')
-
-        #Use SQLAlchemy to check if user has already hearted this event
+        #If it errors because event was already liked, throw an error message.
         add_heart(event_id, user)
         flash(f"You hearted this event.")
-        return("hello")
+        return("hearted")
 
     else: 
         flash(f"Please log in to heart this event.")
-        return("hello")
+        return("unhearted")
 
-# Can leave in a separate route or include in /popnom_details route,
-# returning render template as above
+@app.route('/attend', methods=['POST'])
+def going_to_event():
+    """Mark event as going and add to db."""
+
+    user_id = session.get('user_id')
+
+    if user_id:
+        user = User.query.get(user_id)
+
+        event_id = request.form["attendEventId"]
+
+        add_attend(event_id, user)
+        flash(f"You are attending this event.")
+        return("attending")
+
+    else:
+        flash(f"Please log in to attend this event.")
+        return("not attending")
+
 
     
 if __name__ == "__main__":

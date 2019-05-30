@@ -69,13 +69,13 @@ class User(db.Model):
 
 
 class Heart(db.Model):
-    """User on Popnoms website."""
+    """Heart on Popnoms website."""
 
     __tablename__ = "hearts"
     
     heart_id = db.Column(db.Integer, autoincrement=True, primary_key=True,)
     #event_id is a string because that is the datatype in the API
-    event_id = db.Column(db.String, unique=True, nullable=False)
+    event_id = db.Column(db.String, unique=True, nullable=False,)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False,)
     timestamp = db.Column(db.DateTime, nullable=False,)
     
@@ -86,6 +86,24 @@ class Heart(db.Model):
         """Provide helpful representation when printed."""
 
         return f"<Heart heart_id={self.heart_id} event_id={self.event_id} user_id={self.user_id}>"
+
+class Attending(db.Model):
+    """Going on Popnoms website."""
+
+    __tablename__ = "attendings"
+
+    attending_id = db.Column(db.Integer, autoincrement=True, primary_key=True,)
+    event_id = db.Column(db.String, unique=True, nullable=False,)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False,)
+    timestamp = db.Column(db.DateTime, nullable=False,)
+
+    # Relational attributs with User class
+    user = db.relationship("User", backref=db.backref("goings", order_by=attending_id))
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return f"<Attending attending_id={self.going_id} event_id={self.event_id} user_id={user_id}>"
 
 
 ##############################################################################
