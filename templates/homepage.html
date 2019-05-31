@@ -1,29 +1,28 @@
 {% extends 'base.html' %}
+
 {% block content %}
-  <div id="homepage-block">
-    <h1 id="homepage-title">PopNoms</h1>
+<div id="homepage-block" align=center>
+  <h2> Find PopNoms</h2>
+  <form action="/view_popnoms" method="POST">
+    <br>
+    In
+      <input class="location" type="location" name="location">
+    On/Around
+      <select class="date_kw" type="date_kw" name="date_kw"><br>
+       <option value="today">Today</option>
+       <option value="tomorrow">Tomorrow</option>
+       <option value="this_weekend">This Weekend</option>
+       <option value="this_week">This Week</option>
+       <option value="next_week">Next Week</option>
+       <option value="this_month">This Month</option>
+       <option value="next_month">Next Month</option>
 
-<div align=center>
-    <h2> Search Popnoms</h2>
-    <form action="/view_popnoms" method="POST">
-        <br>
-        In
-            <input class="location" type="location" name="location"><br>
-        On/Around
-            <select class="date_kw" type="date_kw" name="date_kw"><br>
-               <option value="today">Today</option>
-               <option value="tomorrow">Tomorrow</option>
-               <option value="this_weekend">This Weekend</option>
-               <option value="this_week">This Week</option>
-               <option value="next_week">Next Week</option>
-               <option value="this_month">This Month</option>
-               <option value="next_month">Next Month</option>
+    <input class="submit" type="submit" name="submit" value="Search">
+</form>
+</div>
 
-            <input class="submit" type="submit" name="submit" value="Search">
-    </form>
-   </div>
-
-  </div>
-      
+<!-- Comments:
+- Place div (lines 4-22) onto a background image
+- Place above bullet into a container -->
 
 {% endblock %}

@@ -8,7 +8,7 @@ from flask import request
 from dateutil import parser
 import pytz
 from datetime import datetime
-from model import Event, User, Heart, Attending, db, connect_to_db
+from model import User, Heart, Attending, db, connect_to_db
 
 
 #make sure to run source secrets.sh whenever activating new virtualenv
@@ -180,7 +180,6 @@ def add_heart(event_id, user):
     """Adds hearted event to database."""
 
     #Can pass in user and event object
-
     print(f"eb_helper {event_id}")
     print(f"eb_helper {user}")
     
@@ -201,7 +200,7 @@ def add_attend(event_id, user):
 
     attending = Attending(event_id=event_id, user=user, timestamp=timestamp)
 
-    db.session.add(heart)
+    db.session.add(attending)
     db.session.commit()
 
 def get_venue_details(venue_id):

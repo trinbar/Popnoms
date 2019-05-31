@@ -16,42 +16,6 @@ db = SQLAlchemy()
 ##############################################################################
 # Model definitions
 
-#May not need this Event, can just call event details from API
-class Event(db.Model):
-    """Event of Popnoms website."""
-
-    __tablename__ = "events"
-
-    # Define events attributes
-
-    # Event information
-    event_id = db.Column(db.String(50), primary_key=True,)
-    name = db.Column(db.String(100), nullable=False,)
-    eb_url = db.Column(db.String(350), nullable=False,)
-  
-    # Time and Location
-    start_time_local = db.Column(db.DateTime, nullable=False,)
-    end_time_local = db.Column(db.DateTime, nullable=True,)
-
-    venue_id = db.Column(db.String(50), nullable=False,)
-    # venue_name = db.Column(db.String(100), nullable=False,)
-    # address = db.Column(db.String(100), nullable=False,)
-    # latitude = db.Column(db.Float, nullable=False,)
-    # longitude = db.Column(db.Float, nullable=False,)
-    
-
-    # Relational attribute with User class
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False,)
-
-    # Define relationship to user
-    user = db.relationship("User", backref=db.backref("events", order_by=event_id))
-
-
-    def __repr__(self):
-        """Provide helpful representation when printed."""
-
-        return f"<Event event_id={self.event_id} name={self.name}>"
-
 class User(db.Model):
     """User on Popnoms website."""
 
@@ -80,7 +44,7 @@ class Heart(db.Model):
     timestamp = db.Column(db.DateTime, nullable=False,)
     
     # Relational attributes with User class
-    user = db.relationship("User", backref=db.backref("hearts", order_by=heart_id))
+    user = db.relationship("User", backref=db.backref("users"))
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -98,12 +62,48 @@ class Attending(db.Model):
     timestamp = db.Column(db.DateTime, nullable=False,)
 
     # Relational attributs with User class
-    user = db.relationship("User", backref=db.backref("goings", order_by=attending_id))
+    user = db.relationship("User", backref=db.backref("attendings", order_by=attending_id))
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return f"<Attending attending_id={self.going_id} event_id={self.event_id} user_id={user_id}>"
+        return f"<Attending attending_id={self.attending_id} event_id={self.event_id} user_id={self.user_id}>"
+
+#May not need this Event because API calls details; keep as placeholder
+# class Event(db.Model):
+#     """Event of Popnoms website."""
+
+#     __tablename__ = "events"
+
+#     # Define events attributes
+
+#     # Event information
+#     event_id = db.Column(db.String(50), primary_key=True,)
+#     name = db.Column(db.String(100), nullable=False,)
+#     eb_url = db.Column(db.String(350), nullable=False,)
+  
+#     # Time and Location
+#     start_time_local = db.Column(db.DateTime, nullable=False,)
+#     end_time_local = db.Column(db.DateTime, nullable=True,)
+
+#     venue_id = db.Column(db.String(50), nullable=False,)
+#     # venue_name = db.Column(db.String(100), nullable=False,)
+#     # address = db.Column(db.String(100), nullable=False,)
+#     # latitude = db.Column(db.Float, nullable=False,)
+#     # longitude = db.Column(db.Float, nullable=False,)
+    
+
+    # # Relational attribute with User class
+    # user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False,)
+
+    # # Define relationship to user
+    # user = db.relationship("User", backref=db.backref("events", order_by=event_id))
+
+
+     # def __repr__(self):
+     #    """Provide helpful representation when printed."""
+
+     #    return f"<Event event_id={self.event_id} name={self.name}>"
 
 
 ##############################################################################

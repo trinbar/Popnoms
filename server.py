@@ -5,16 +5,12 @@
 from flask import Flask, render_template, request, flash, redirect, session, jsonify, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import db, connect_to_db, User, Event, Heart, Attending
+from model import db, connect_to_db, User, Heart, Attending
 
 from eb_helper import (get_events, get_event_details, create_new_user, get_venue_details, get_venue_coordinates, add_heart, add_attend)
 from mb_helper import (set_map_center, set_markers)
 
 import requests
-
-# from batched_eb_request import (get_batched_results, get_list_of_suggested_events, 
-# get_suggested_event_details)
-
 
 # When we create a Flask app, it needs to know what module to scan for things
 # like routes so the __name__ is required
@@ -24,9 +20,9 @@ app = Flask(__name__)
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = "SECRETSECRETSECRET"
 
-# # Normally, if you use an undefined variablei n Jinja2, it fails silently
-# # Fix this so that it raises an error instead
-# app.jinja_env.undefined = StrictUndefined
+# Normally, if you use an undefined variable in Jinja2, it fails silently
+# Fix this so that it raises an error instead
+app.jinja_env.undefined = StrictUndefined
 
 
 @app.route('/')
@@ -163,6 +159,7 @@ def view_popnom_details():
 @app.route('/heart', methods=['POST'])
 def heart_event():
     """Mark event as hearted and add to db."""
+    #Should move to /popnom_detals route?
 
     # Check if user in session in order to heart event
     # Maybe do a comprehension from lines 168-173
@@ -188,6 +185,7 @@ def heart_event():
 @app.route('/attend', methods=['POST'])
 def going_to_event():
     """Mark event as going and add to db."""
+    #Should move to /popnom_detals route?
 
     user_id = session.get('user_id')
 
@@ -204,7 +202,39 @@ def going_to_event():
         flash(f"Please log in to attend this event.")
         return("not attending")
 
+@app.route('/user_profile')
+def view_profile():
+    """View user's profile."""
 
+    user_id = session.get('user_id')
+
+    attending_events = []
+    heart_events = []
+
+    #Create a helper for these functions!
+    if user_id:
+        #attendings and hearts are lists
+        attendings = Attending.query.filter(user_id == user_id).all()
+        for event in attendings:
+            attending_events.append(event.event_id)
+    
+        print(attending_events)
+
+        event_details=[]
+
+        for event_id in attending_events:
+            event_details.append(get_event_details(event_id))
+
+        hearts = Heart.query.filter(user_id == user_id).all()
+        for heart in hearts:
+            heart_events.append(heart.event_id)
+    
+        print(heart_events)
+
+        return render_template("user_profile.html", event_details=event_details, heart_events=heart_events)
+
+    else:
+        return("Please log in to view profile.")
     
 if __name__ == "__main__":
     app.debug = True
