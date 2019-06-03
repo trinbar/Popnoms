@@ -20,25 +20,21 @@ app = Flask(__name__)
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = "SECRETSECRETSECRET"
 
-# Normally, if you use an undefined variable in Jinja2, it fails silently
-# Fix this so that it raises an error instead
-app.jinja_env.undefined = StrictUndefined
-
-
-@app.route('/')
+@app.route("/")
 def index():
-    """Homepage route"""
+    """Index/homepage route."""
 
-    return render_template("homepage.html")
+    return render_template("index.html")
 
-@app.route('/registration_form', methods=['GET'])
+
+@app.route("/registration_form", methods=["GET"])
 def registration_form():
     """Show form for user signup."""
 
     return render_template("registration_form.html")
 
 
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=["POST"])
 def register_process():
     """Process registration."""
 
@@ -62,14 +58,14 @@ def register_process():
         flash(f"User already exists. Please log in.")
         return redirect(f"/login_form")
 
-@app.route('/login_form')
+@app.route("/login_form")
 def login_form():
     """Show login form."""
 
     return render_template("login_form.html")
 
 
-@app.route('/login', methods=['GET','POST'])
+@app.route('/login', methods=["GET','POST"])
 def login_process():
     """Process login."""
 
@@ -93,7 +89,7 @@ def login_process():
     return redirect(f"/")
 
 
-@app.route('/logout')
+@app.route("/logout")
 def logout():
     """Log out."""
 
@@ -101,7 +97,7 @@ def logout():
     flash("Logged Out.")
     return redirect("/")
 
-@app.route('/view_popnoms', methods=['GET','POST'])
+@app.route("/view_popnoms", methods=["GET","POST"])
 def view_popnoms():
     """Display popup events."""
 
@@ -142,7 +138,6 @@ def view_popnoms():
     return render_template("view_popnoms.html", events=events, location=location,
                            map_center=map_center, coordinates_list=coordinates_list,
                            user_id=user_id)
-
 
 @app.route('/popnom_details', methods=['GET','POST'])
 def view_popnom_details():
@@ -213,25 +208,31 @@ def view_profile():
 
     #Create a helper for these functions!
     if user_id:
-        #attendings and hearts are lists
+        #attendings
         attendings = Attending.query.filter(user_id == user_id).all()
         for event in attendings:
             attending_events.append(event.event_id)
     
         print(attending_events)
 
-        event_details=[]
+        event_details = []
 
         for event_id in attending_events:
             event_details.append(get_event_details(event_id))
 
+        #hearts
         hearts = Heart.query.filter(user_id == user_id).all()
-        for heart in hearts:
-            heart_events.append(heart.event_id)
+        for event in hearts:
+            heart_events.append(event.event_id)
     
         print(heart_events)
 
-        return render_template("user_profile.html", event_details=event_details, heart_events=heart_events)
+        heart_details = []
+
+        for event_id in heart_events:
+            heart_details.append(get_event_details(event_id))
+
+        return render_template("user_profile.html", event_details=event_details, heart_details=heart_details)
 
     else:
         return("Please log in to view profile.")
