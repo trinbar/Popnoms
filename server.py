@@ -5,9 +5,9 @@
 from flask import Flask, render_template, request, flash, redirect, session, jsonify, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import db, connect_to_db, User, Heart, Attending
+from model import db, connect_to_db, User, Bookmark
 
-from eb_helper import (get_events, get_event_details, create_new_user, get_venue_details, get_venue_coordinates, add_heart, add_attend)
+from eb_helper import (get_events, get_event_details, create_new_user, get_venue_details, get_venue_coordinates, add_bookmark_to_db)
 from mb_helper import (set_map_center, set_markers)
 
 import requests
@@ -65,7 +65,7 @@ def login_form():
     return render_template("login_form.html")
 
 
-@app.route('/login', methods=["GET','POST"])
+@app.route('/login', methods=["GET","POST"])
 def login_process():
     """Process login."""
 
@@ -85,7 +85,7 @@ def login_process():
 
     session["user_id"] = user.user_id
 
-    flash("Logged in")
+    flash("Logged in.")
     return redirect(f"/")
 
 
@@ -99,9 +99,14 @@ def logout():
 
 @app.route("/view_popnoms", methods=["GET","POST"])
 def view_popnoms():
-    """Display popup events."""
+    """Display popup events.
 
-    #Request.form.get results from homepage's search for
+        1) Get results from homepage's search form
+        2) Obtain map center coordinates
+        3) From venue_id's, obtain venue coordinates
+    """
+
+    #Get results from homepage's search form
     location = request.form["location"]
     start_date_kw = request.form["date_kw"]
 
@@ -129,73 +134,56 @@ def view_popnoms():
         coordinates_list.append(coordinates)
 
     print(coordinates_list)
-    #Get user_id from session and save search to db
-    user_id = session.get("user_id")
-    #If user in session
-    # if user_id:
-    #     save_search_to_db(user_id=user_id, search_location=location)
 
-    return render_template("view_popnoms.html", events=events, location=location,
-                           map_center=map_center, coordinates_list=coordinates_list,
-                           user_id=user_id)
+    return render_template("view_popnoms.html", 
+                            events=events, location=location,
+                            map_center=map_center,
+                            coordinates_list=coordinates_list)
 
 @app.route('/popnom_details', methods=['GET','POST'])
 def view_popnom_details():
     """Display popup event details."""
 
     event_id = request.args.get("event_id")
-
     #get_event_details returns a json string
     details = get_event_details(event_id)
 
-    return render_template("popnom_details.html", details=details)
-
-
-@app.route('/heart', methods=['POST'])
-def heart_event():
-    """Mark event as hearted and add to db."""
-    #Should move to /popnom_detals route?
-
-    # Check if user in session in order to heart event
-    # Maybe do a comprehension from lines 168-173
+    #Gets the user_id from the session
     user_id = session.get('user_id')
 
+    #Checks the user_id in session
     if user_id:
-        user = User.query.get(user_id)
-         # Get the heartButton 
-
-    # handle both the hearted and unhearted statuses 
-
-        event_id = request.form["heartEventId"]
-
-        #If it errors because event was already liked, throw an error message.
-        add_heart(event_id, user)
-        flash(f"You hearted this event.")
-        return("hearted")
-
-    else: 
-        flash(f"Please log in to heart this event.")
-        return("unhearted")
-
-@app.route('/attend', methods=['POST'])
-def going_to_event():
-    """Mark event as going and add to db."""
-    #Should move to /popnom_detals route?
-
-    user_id = session.get('user_id')
-
-    if user_id:
-        user = User.query.get(user_id)
-
-        event_id = request.form["attendEventId"]
-
-        add_attend(event_id, user)
-        flash(f"You are attending this event.")
-        return("attending")
-
+        #Gets the user object and username
+        user_object = db.session.query(User).filter(User.user_id == user_id).one()
+        username = user_object.username
+        # Gets bookmark for the event if the user has already bookmarked the event and is logged in
+        # Display user's bookmarks if they have already bookmarked the event
+        bookmark = db.session.query(Bookmark).filter((Bookmark.user_id == user_id) & (Bookmark.event_id == event_id)).first()
     else:
-        flash(f"Please log in to attend this event.")
-        return("not attending")
+        username = "Not logged in."
+        bookmark = None
+        comments = None
+    
+
+    return render_template("popnom_details.html", details=details, username=username, bookmark=bookmark)
+
+
+@app.route('/bookmark_event', methods=['GET','POST'])
+def bookmark_event():
+    """Mark event as bookmarked and add to db."""
+
+    event_id = request.form["event_id"]
+    print(event_id)
+    # Status of bookmark type "going", "interested"
+    status = request.form["bookmark_type"]
+    print(status)
+    # Get user ID from session
+    user_id = session.get("user_id")
+    print(user_id)
+
+    # This helper function returns either bookmark_success or bookmark_failure message
+    return add_bookmark_to_db(status, event_id, user_id)
+
 
 @app.route('/user_profile')
 def view_profile():
@@ -203,36 +191,34 @@ def view_profile():
 
     user_id = session.get('user_id')
 
-    attending_events = []
-    heart_events = []
+    going_events = []
+    interested_events = []
 
     #Create a helper for these functions!
     if user_id:
-        #attendings
-        attendings = Attending.query.filter(user_id == user_id).all()
-        for event in attendings:
-            attending_events.append(event.event_id)
-    
-        print(attending_events)
 
-        event_details = []
+        #Get details for events bookmarked "going"
+        bookmarked_going = db.session.query(Bookmark).filter((Bookmark.bookmark_type == "going") & (Bookmark.user_id == user_id)).all()
+        for event in bookmarked_going:
+            going_events.append(event.event_id)
 
-        for event_id in attending_events:
-            event_details.append(get_event_details(event_id))
+        going_details = []
 
-        #hearts
-        hearts = Heart.query.filter(user_id == user_id).all()
-        for event in hearts:
-            heart_events.append(event.event_id)
-    
-        print(heart_events)
+        for event_id in going_events:
+            going_details.append(get_event_details(event_id))
 
-        heart_details = []
+        #Get details for events bookmarked "interested"
+        bookmarked_interested = db.session.query(Bookmark).filter((Bookmark.bookmark_type == "interested") & (Bookmark.user_id == user_id)).all()
+        for event in bookmarked_interested:
+            interested_events.append(event.event_id)
 
-        for event_id in heart_events:
-            heart_details.append(get_event_details(event_id))
+        interested_details = []
 
-        return render_template("user_profile.html", event_details=event_details, heart_details=heart_details)
+        for event_id in interested_events:
+            interested_details.append(get_event_details(event_id))
+
+
+        return render_template("user_profile.html", going_details=going_details, interested_details=interested_details)
 
     else:
         return("Please log in to view profile.")

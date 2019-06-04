@@ -12,21 +12,21 @@
 
     <h3>Popnoms you are attending</h3>
     <ul class="events">
-        {% for details in event_details %}
-    <li class="event-card"><img src="{{ details.logo }}"" style="width: 60px; height:60px; border:0;"></a><br>{{ details.name }}<br>
+        {% for details in going_details %}
+    <li class="event-card"><a href="/popnom_details?event_id={{ details.event_id }}"><img src="{{ details.logo }}"" style="width: 60px; height:60px; border:0;"></a><br>{{ details.name }}<br>
         <span style="font-size: 65%;">{{ details.start_time }} to {{ details.end_time }}</span>
     </li>
     {% endfor %}
     </ul>
  </div>
 
- <h3>Popnoms you hearted</h3>
+ <h3>Popnoms you are interested in</h3>
 
  <div class="col-xs-12 col-md-6" align=left>
 
     <ul class="events">
-    {% for details in heart_details %}
-    <li class="event-card"><img src="{{ details.logo }}" style="width:60px; height:60px; border:0;"></a><br>
+    {% for details in interested_details %}
+    <li class="event-card"><a href="/popnom_details?event_id={{ details.event_id }}"><img src="{{ details.logo }}" style="width:60px; height:60px; border:0;"></a><br>
     {{ details.name }}<br>
     <span style="font-size: 65%;">
         {{ details.start_time }} to {{ details.end_time }}

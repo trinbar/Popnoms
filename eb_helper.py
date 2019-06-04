@@ -8,7 +8,7 @@ from flask import request
 from dateutil import parser
 import pytz
 from datetime import datetime
-from model import User, Heart, Attending, db, connect_to_db
+from model import User, Bookmark, db, connect_to_db
 
 
 #make sure to run source secrets.sh whenever activating new virtualenv
@@ -176,32 +176,25 @@ def get_event_details(event_id):
 
     return event_details
 
-def add_heart(event_id, user):
-    """Adds hearted event to database."""
+def add_bookmark_to_db(status, event_id, user_id):
+    """Adds bookmarked event to database."""
 
-    #Can pass in user and event object
-    print(f"eb_helper {event_id}")
-    print(f"eb_helper {user}")
-    
-
-    timestamp = datetime.now()
-    print(f"timestamp {timestamp}")
-
-    # Add event to table
-    heart = Heart(event_id=event_id, user=user, timestamp=timestamp)
-
-    db.session.add(heart)
-    db.session.commit()
-
-def add_attend(event_id, user):
-    """Adds attending event to database."""
-
+    bookmark_success = f"Successfully bookmarked as {status}."
+    bookmark_failure = "You must be logged in to bookmark and event."
     timestamp = datetime.now()
 
-    attending = Attending(event_id=event_id, user=user, timestamp=timestamp)
-
-    db.session.add(attending)
-    db.session.commit()
+    # If the user is logged in
+    if user_id:
+        # Make a new Bookmark, passing it the user_id, event_id, and bookmarktype object, add & commit
+        bookmark = Bookmark(user_id=user_id, event_id=event_id, bookmark_type=status, timestamp=timestamp)
+        print("BOOKMARK", bookmark)
+        db.session.add(bookmark)
+        db.session.commit()
+        # Return success message
+        return bookmark_success
+    # If the bookmark for event already exist, we want to update the bookmark type
+    else:
+        return bookmark_failure
 
 def get_venue_details(venue_id):
     """Gets information about a venue based on the venue id."""

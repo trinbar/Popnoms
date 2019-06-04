@@ -32,13 +32,14 @@ class User(db.Model):
         return f"<User user_id={self.user_id} username={self.username} email={self.email}>"
 
 
-class Heart(db.Model):
+class Bookmark(db.Model):
     """Heart on Popnoms website."""
 
-    __tablename__ = "hearts"
+    __tablename__ = "bookmarks"
     
-    heart_id = db.Column(db.Integer, autoincrement=True, primary_key=True,)
+    bookmark_id = db.Column(db.Integer, autoincrement=True, primary_key=True,)
     #event_id is a string because that is the datatype in the API
+    bookmark_type = db.Column(db.String(20), nullable=False,)
     event_id = db.Column(db.String, unique=True, nullable=False,)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False,)
     timestamp = db.Column(db.DateTime, nullable=False,)
@@ -49,25 +50,7 @@ class Heart(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return f"<Heart heart_id={self.heart_id} event_id={self.event_id} user_id={self.user_id}>"
-
-class Attending(db.Model):
-    """Going on Popnoms website."""
-
-    __tablename__ = "attendings"
-
-    attending_id = db.Column(db.Integer, autoincrement=True, primary_key=True,)
-    event_id = db.Column(db.String, unique=True, nullable=False,)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False,)
-    timestamp = db.Column(db.DateTime, nullable=False,)
-
-    # Relational attributs with User class
-    user = db.relationship("User", backref=db.backref("attendings", order_by=attending_id))
-
-    def __repr__(self):
-        """Provide helpful representation when printed."""
-
-        return f"<Attending attending_id={self.attending_id} event_id={self.event_id} user_id={self.user_id}>"
+        return f"<Bookmark bookmark_id={self.bookmark_id} bookmark_type={self.bookmark_type} event_id={self.event_id} user_id={self.user_id}>"
 
 #May not need this Event because API calls details; keep as placeholder
 # class Event(db.Model):
