@@ -11,7 +11,7 @@
     <h3>PopNoms in {{ location }}</h3>
       <ul class="events">
         {% for event in events %}
-          <li class="event-card"><a href="/popnom_details?event_id={{ event["event_id"]}}"><img src="{{ event["logo"]}}" style="width:60px;height:60px;border:0;"></a><br>
+          <li class="event-card"><a href="/event_details?event_id={{ event["event_id"]}}"><img src="{{ event["logo"]}}" style="width:60px;height:60px;border:0;"></a><br>
             {{ event.name }}<br>
             <span style="font-size: 65%;">{{ event.start_time }} to {{event["end_time"]}}</span>
 

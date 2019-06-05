@@ -17,44 +17,17 @@ def load_users():
         fake = Faker()
         fake_user_list.append(fake)
 
-    # add_to_db = []
-
     for user in fake_user_list:
         print(user)
-        user = (User(email=user.email(), username=user.name(), password="password"))
-
-    # print(add_to_db)    
+        user = (User(email=user.email(), username=user.name(), password="password"))   
         db.session.add(user)
+
     db.session.commit()
 
-# def fake_helper():
-#     """Helper function for load_fake_bookmarks() to create fake search queries."""
-
-#     location = randomchoice("San Francisco, CA", "New York, NY", "Austin, TX")
-#     start_date_kw = randomchoice("today", "tomorrow", "this week", "next week", "this month", "next month")
-
-#     events = []
-
-#     for fake in range(300):
-#         fake = Faker()
-#         events.append(get_events(location, start_date_kw))
-
-#     return events
-
-# def load_fake_bookmarks():
-#     """Seed fake bookmarks into popnoms db."""
-
-#     fake_bookmarks = []
-
-#     for fake in range(300):
-#         fake = Faker()
-#         fake_bookmarks.append(fake)
-
-#     add_to_db = []
-
-
-#     for bookmark in fake_bookmarks:
-#         add_to_db.append(Bookmark(bookmark_type=randint(1,2), event_id=, user_id=, timestamp=))
+# Function load_fake_bookmarks for demonstration purposes only.
+def load_fake_bookmarks():
+    """Seed fake bookmarks into popnoms db. Do this after seeding database and before running app."""
+    pass
 
 
 if __name__ == "__main__":

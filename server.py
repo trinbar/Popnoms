@@ -35,7 +35,7 @@ def registration_form():
 
 
 @app.route('/register', methods=["POST"])
-def register_process():
+def registration_process():
     """Process registration."""
 
     # Get form variables
@@ -97,8 +97,8 @@ def logout():
     flash("Logged Out.")
     return redirect("/")
 
-@app.route("/view_popnoms", methods=["GET","POST"])
-def view_popnoms():
+@app.route("/events", methods=["GET","POST"])
+def display_events():
     """Display popup events.
 
         1) Get results from homepage's search form
@@ -135,13 +135,13 @@ def view_popnoms():
 
     print(coordinates_list)
 
-    return render_template("view_popnoms.html", 
+    return render_template("events.html", 
                             events=events, location=location,
                             map_center=map_center,
                             coordinates_list=coordinates_list)
 
-@app.route('/popnom_details', methods=['GET','POST'])
-def view_popnom_details():
+@app.route('/event_details', methods=['GET','POST'])
+def view_event_details():
     """Display popup event details."""
 
     event_id = request.args.get("event_id")
@@ -149,7 +149,7 @@ def view_popnom_details():
     details = get_event_details(event_id)
 
     #Gets the user_id from the session
-    user_id = session.get('user_id')
+    user_id = session.get('user_id')    
 
     #Checks the user_id in session
     if user_id:
@@ -165,7 +165,7 @@ def view_popnom_details():
         comments = None
     
 
-    return render_template("popnom_details.html", details=details, username=username, bookmark=bookmark)
+    return render_template("event_details.html", details=details, username=username, bookmark=bookmark)
 
 
 @app.route('/bookmark_event', methods=['GET','POST'])
