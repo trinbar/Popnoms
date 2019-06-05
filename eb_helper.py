@@ -70,6 +70,7 @@ def get_events(location, start_date_kw):
     response = requests.get(EVENTBRITE_URL + "events/search/", headers=headers, params=payload)
 
     data = response.json()
+    print(data)
 
     events = []
 

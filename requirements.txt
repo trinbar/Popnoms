@@ -31,3 +31,4 @@ uritemplate==3.0.0
 urllib3==1.25.2
 Werkzeug==0.14.1
 zope.interface==4.6.0
+secrets.sh

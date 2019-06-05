@@ -4,7 +4,7 @@
 
 export EVENTBRITE_KEY="SINIF5SUACTUMOR3XLJOUVQW7PODZLR6DD745U334ZBD5DNIJG"
 export EVENTBRITE_SECRET="JKW3IQWTLJOTH7T2FS"
-export EVENTBRITE_TOKEN="HPUKCNXDXMR4NVEYB4HK"
+export EVENTBRITE_TOKEN="5XOGZFEOFFFKXX33UZMC"
 
 # Secrets for Mapbox app
 # Find at: https://account.mapbox.com/access-tokens/
@@ -12,6 +12,9 @@ export EVENTBRITE_TOKEN="HPUKCNXDXMR4NVEYB4HK"
 # This file should never go into github!
 export MAPBOX_TOKEN="pk.eyJ1IjoidHJpbmJhciIsImEiOiJjanZ3emhpNXoxZW9kNDRwMWtzaWpwNm8xIn0.2201lSCmgIMWpQndN1igLg"
 
+# Secrets for Sendgrid API
+# Find at: N/A
+export SENDGRID_API_KEY="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"
 # Secrets for Yelp app
 # Find these at: https://www.yelp.com/developers/v3/manage_app?
 # This file should never go into github!
