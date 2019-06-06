@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}My PopNom Profile{% endblock %}
+
+{% block content %}
+
+<div class="row" align=center>
+
+    <h1>My profile</h1>
+
+  <div class="col-xs-12 col-md-6" align=left>
+
+    <h3>Popnoms you are attending</h3>
+    <ul class="events">
+        {% for details in going_details %}
+    <li class="event-card"><a href="/event_details?event_id={{ details.event_id }}"><img src="{{ details.logo }}"" style="width: 60px; height:60px; border:0;"></a><br>{{ details.name }}<br>
+        <span style="font-size: 65%;">{{ details.start_time }} to {{ details.end_time }}</span>
+    </li>
+    {% endfor %}
+    </ul>
+ </div>
+
+ <h3>Popnoms you are interested in</h3>
+
+ <div class="col-xs-12 col-md-6" align=left>
+
+    <ul class="events">
+    {% for details in interested_details %}
+    <li class="event-card"><a href="/event_details?event_id={{ details.event_id }}"><img src="{{ details.logo }}" style="width:60px; height:60px; border:0;"></a><br>
+    {{ details.name }}<br>
+    <span style="font-size: 65%;">
+        {{ details.start_time }} to {{ details.end_time }}
+    </span>
+    </li>
+    , {% endfor %}
+    </ul>
+
+</div>
+
+</div>
+
+{% endblock %}

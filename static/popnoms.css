@@ -50,6 +50,14 @@ html, body {
   cursor: pointer;
 }
 
+.mapbox-popup {
+  max-width: 200px;
+  height: 200px;
+  overflow-y: scroll;
+  font: 400 15px/22px 'Source Sans Pro', 'Helvetica Neue', Sans-serif;
+  padding: 0;
+}
+
 /*Event card in details and user profile*/
 .event-card {
   background-color: #ffffff;

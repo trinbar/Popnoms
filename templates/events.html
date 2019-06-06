@@ -34,14 +34,14 @@
       <script>
 
       //Mapbox default accessToken
-      mapboxgl.accessToken = 'pk.eyJ1IjoidHJpbmJhciIsImEiOiJjanZ3emhpNXoxZW9kNDRwMWtzaWpwNm8xIn0.2201lSCmgIMWpQndN1igLg';
+      mapboxgl.accessToken = "pk.eyJ1IjoidHJpbmJhciIsImEiOiJjanZ3emhpNXoxZW9kNDRwMWtzaWpwNm8xIn0.2201lSCmgIMWpQndN1igLg";
 
       //Display map using map_center of location query
       const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
         center: {{ map_center }},
-        zoom: 11
+        zoom: 10
       });
 
       const geojson = {
@@ -53,7 +53,8 @@
           marker: {
             type: 'Point',
             coordinates: {{ coordinates_list[loop.index0] }},
-            event_name: "{{event.name}}"
+            event_name: "{{event.name}}",
+            event_url: "/event_details?event_id={{ event.event_id }}"
           },
         properties: {
           title: 'Mapbox',
@@ -67,8 +68,9 @@
       //add markers to map
       geojson.features.forEach(function(marker) {
         //create an HTML element for each feature
-        let popup = new mapboxgl.Popup({ offset: 25})
-          .setText(marker.marker.event_name);
+        let popup = new mapboxgl.Popup({ offset: 25 })
+          // .setText(marker.marker.event_name)
+          .setHTML('<a href="'+ marker.marker.event_url +'">' + marker.marker.event_name + '</a>');
 
         let el = document.createElement('div');
         el.className = 'marker';

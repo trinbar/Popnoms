@@ -13,7 +13,7 @@ def load_users():
     
     fake_user_list = []
 
-    for fake in range(300):
+    for fake in range(10):
         fake = Faker()
         fake_user_list.append(fake)
 

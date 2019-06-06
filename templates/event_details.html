@@ -2,10 +2,6 @@
 
 {% block title %}PopNoms{% endblock %}
 
-<!-- {% block js %}
-  
-{% endblock %} -->
-
 {% block content %}
 
 <div class ="row" style="margin:20px padding:10px;">
@@ -31,7 +27,7 @@
         <form action="/bookmark_event" method="POST">
         <input type="radio" class="bookmark" name="going_bookmark" value="going" data-eventid={{ details["event_id"] }} {% if bookmark and bookmark.bookmark_type == "going" %} checked {% endif %}>  I'm Going!
 
-        <input type="radio" class="bookmark" name="interested_bookmark" value="interested" data-eventid={{ details["event_id"] }} {% if bookmark and bookmark.bookmark_type == "inter" %} checked {% endif %}>  Interested
+        <input type="radio" class="bookmark" name="interested_bookmark" value="interested" data-eventid={{ details["event_id"] }} {% if bookmark and bookmark.bookmark_type == "interested" %} checked {% endif %}>  Interested
 
           <script>
         "use strict";
@@ -61,17 +57,41 @@
         });
         </script>
         </form>
-            
-<!-- 
-        <input class="bookmark" id="interested_button" type="radio" name="bookmark" value="interested" data-eventid="{{ details.event_id }}" data-status="interested" {% if bookmark and bookmark.bookmark_type == "interested" %} checked {% endif %}/>
-        <label for="interested_button">
-            Interested
-        </label>
-        </form> -->
         
     {% endif %}
+        <!-- Buy tickets on Eventbrite button -->
+         <a href="{{ details["eb_url"] }}" class="btn btn-primary ">Buy Tickets from Eventbrite</a><br><br><br>
 
-         <a href="{{ details["eb_url"] }}" class="btn btn-primary ">Buy Tickets from Eventbrite</a>
+         <!-- Tweet button -->
+       <p>
+       <a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Check%20out%20this%20PopNom%20event!"data-size="large"><a href={{ details["eb_url"] }}></a>
+
+       <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      </p>
+
+        <!-- Facebook button -->
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3"></script>
+
+        <div class="fb-share-button" data-size="large" data-href="{{ details["eb_url"] }}" data-layout="button"></div></a></div>
+
+      <div class="col-xs-12 col-md-6">
+
+          <h3>PopNom users attending this event:</h3>
+
+          <ul class="events">{% for attendee in attendees %}
+          <li class="event-card"><a href="/user_profile?user_id={{ attendee.user_id }}">{{ attendee.username }}</a>
+          {% endfor %}
+          </li>
+          </ul>
+
+          <h3>PopNom users interested in this event:</h3>
+
+          {% for attendee in interested %}
+          {{ attendee }}
+          {% endfor %}
+
+      </div>
      </div>
  </div>
  

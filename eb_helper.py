@@ -242,6 +242,32 @@ def get_venue_coordinates(venue_id):
 
     return coordinates
 
+def get_attendees(event_id):
+    """Gets a list of all attendees of an event."""
+
+    # Returns a list of bookmark objects
+    bookmarks = db.session.query(Bookmark).filter((Bookmark.event_id == event_id) & (Bookmark.bookmark_type == "going")).all()
+
+    attendees = []
+
+    for bookmark in bookmarks:
+        user = bookmark.user
+        attendees.append(user)
+
+    return attendees
+
+def get_interested(event_id):
+    """Gets a list of all interested users of an event."""
+    bookmarks = db.session.query(Bookmark).filter((Bookmark.event_id == event_id) & (Bookmark.bookmark_type == "interested")).all()
+
+    interested = []
+
+    for bookmark in bookmarks:
+        user = bookmark.user
+        attendees.append(user)
+
+    return interested
+
 
 if __name__ == "__main__":
     # As a convenience, if we run this module interactively, it will leave

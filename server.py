@@ -7,7 +7,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import db, connect_to_db, User, Bookmark
 
-from eb_helper import (get_events, get_event_details, create_new_user, get_venue_details, get_venue_coordinates, add_bookmark_to_db)
+from eb_helper import (get_events, get_event_details, create_new_user, get_venue_details, get_venue_coordinates, add_bookmark_to_db, get_attendees, get_interested)
 from mb_helper import (set_map_center, set_markers)
 
 import requests
@@ -140,7 +140,7 @@ def display_events():
                             map_center=map_center,
                             coordinates_list=coordinates_list)
 
-@app.route('/event_details', methods=['GET','POST'])
+@app.route("/event_details", methods=["GET","POST"])
 def view_event_details():
     """Display popup event details."""
 
@@ -149,7 +149,7 @@ def view_event_details():
     details = get_event_details(event_id)
 
     #Gets the user_id from the session
-    user_id = session.get('user_id')    
+    user_id = session.get("user_id")   
 
     #Checks the user_id in session
     if user_id:
@@ -159,16 +159,23 @@ def view_event_details():
         # Gets bookmark for the event if the user has already bookmarked the event and is logged in
         # Display user's bookmarks if they have already bookmarked the event
         bookmark = db.session.query(Bookmark).filter((Bookmark.user_id == user_id) & (Bookmark.event_id == event_id)).first()
+
+         #Gets attendees of event
+        attendees = get_attendees(event_id)
+        interested = get_interested(event_id)
+
     else:
         username = "Not logged in."
         bookmark = None
         comments = None
+        attendees = "Please log in to view attendee list."
+        interested = "Please log in to view interested list."
     
 
-    return render_template("event_details.html", details=details, username=username, bookmark=bookmark)
+    return render_template("event_details.html", details=details, username=username, bookmark=bookmark, attendees=attendees, interested=interested)
 
 
-@app.route('/bookmark_event', methods=['GET','POST'])
+@app.route("/bookmark_event", methods=["GET","POST"])
 def bookmark_event():
     """Mark event as bookmarked and add to db."""
 
@@ -185,14 +192,17 @@ def bookmark_event():
     return add_bookmark_to_db(status, event_id, user_id)
 
 
-@app.route('/user_profile')
+@app.route("/my_profile")
 def view_profile():
-    """View user's profile."""
+    """View my profile."""
 
-    user_id = session.get('user_id')
+    user_id = session.get("user_id")
 
-    going_events = []
-    interested_events = []
+    #Get user's details
+    user_object = db.session.query(User).filter(User.user_id == user_id)
+
+    going_details = []
+    interested_details = []
 
     #Create a helper for these functions!
     if user_id:
@@ -200,28 +210,27 @@ def view_profile():
         #Get details for events bookmarked "going"
         bookmarked_going = db.session.query(Bookmark).filter((Bookmark.bookmark_type == "going") & (Bookmark.user_id == user_id)).all()
         for event in bookmarked_going:
-            going_events.append(event.event_id)
-
-        going_details = []
-
-        for event_id in going_events:
-            going_details.append(get_event_details(event_id))
+            going_details.append(get_event_details(event.event_id))
 
         #Get details for events bookmarked "interested"
         bookmarked_interested = db.session.query(Bookmark).filter((Bookmark.bookmark_type == "interested") & (Bookmark.user_id == user_id)).all()
         for event in bookmarked_interested:
-            interested_events.append(event.event_id)
+            interested_details.append(get_event_details(event.event_id))
 
-        interested_details = []
-
-        for event_id in interested_events:
-            interested_details.append(get_event_details(event_id))
-
-
-        return render_template("user_profile.html", going_details=going_details, interested_details=interested_details)
+        return render_template("my_profile.html", going_details=going_details, interested_details=interested_details)
 
     else:
         return("Please log in to view profile.")
+
+@app.route("/user_profile")
+def view_user_profile():
+    """View other user's profile."""
+
+    user_id = request.args.get("user_id")
+
+    user = db.session.query(User).filter(User.user_id == user_id).one()
+
+    return render_template("user_profile.html", user=user)
     
 if __name__ == "__main__":
     app.debug = True
