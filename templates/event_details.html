@@ -79,7 +79,7 @@
 
           <h3>PopNom users attending this event:</h3>
 
-          <ul class="events">{% for attendee in attendees %}
+          <ul class="events">{% for attendee in attendees %}>
           <li class="event-card"><a href="/user_profile?user_id={{ attendee.user_id }}">{{ attendee.username }}</a>
           {% endfor %}
           </li>
@@ -87,10 +87,23 @@
 
           <h3>PopNom users interested in this event:</h3>
 
-          {% for attendee in interested %}
+          <!-- {% for attendee in interested %}
           {{ attendee }}
-          {% endfor %}
+          {% endfor %} -->
 
+          <ul class="events">
+            <li class="user"><a href="/user_profile?user_id=5">{{ attendees.username }}</a>
+
+          <script>
+            "use strict";
+        $.ajax({
+          url: 'https://randomuser.me/api/',
+          dataType: 'json',
+          success: function(data) {
+          $("#user").html(data);
+          }
+          });
+        </script>
       </div>
      </div>
  </div>

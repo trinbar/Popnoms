@@ -4,31 +4,63 @@
 import os
 from server import app
 from model import User, Bookmark, db, connect_to_db
-from faker import Faker
-# from random import randint, randomchoice
+import requests
+from datetime import datetime
 # from eb_helper import get_events
 
-def load_users():
-    """Seed fake users into popnoms db."""
+def create_random_user():
+    """Seed fake users from RandomUsers API"""
+
+    randomapi_url = "https://randomuser.me/api/?format=json"
+
+    response = requests.get(randomapi_url)
     
-    fake_user_list = []
+    data = response.json()
+    
+    for user in data["results"]:
+        user_details = {}
 
-    for fake in range(10):
-        fake = Faker()
-        fake_user_list.append(fake)
+        name = user["name"]["first"].title() + " " + user["name"]["last"].title()
+        email = user["email"]
+        password = "password"
+        lrg_pic = user["picture"]["large"]
+        thumb_pic = user["picture"]["thumbnail"]
 
-    for user in fake_user_list:
-        print(user)
-        user = (User(email=user.email(), username=user.name(), password="password"))   
+        user_details["name"] = name
+        user_details["email"] = email
+        user_details["password"] = password
+        user_details["lrg_pic"] = lrg_pic
+        user_details["thumb_pic"] = thumb_pic
+
+        return user_details
+
+def load_random_users():
+
+    user_list = []
+
+    for x in range(75):
+        user_list.append(create_random_user())
+
+    for user in user_list:
+        user = User(email=user["email"], username=user["name"], 
+                    password=user["password"], lrg_pic=user["lrg_pic"],
+                    thumb_pic=user["thumb_pic"])
         db.session.add(user)
 
     db.session.commit()
 
 # Function load_fake_bookmarks for demonstration purposes only.
 def load_fake_bookmarks():
-    """Seed fake bookmarks into popnoms db. Do this after seeding database and before running app."""
-    pass
+    """See    # timestamp = datetime.now()
 
+    # for x in range(15):
+    #     bookmark = Bookmark(event_id="58032445607", user_id=x, bookmark_type = "going", timestamp=timestamp)
+
+    # for y in range(12):
+    #     bookmark = Bookmark(event_id="58032445607", user_id=x, bookmark_type = "interested", timestamp=timestamp)d fake bookmarks into popnoms db. Do this after seeding database and before running app."""
+
+    
+    pass
 
 if __name__ == "__main__":
  
@@ -40,4 +72,4 @@ if __name__ == "__main__":
     db.create_all()
 
     # Add the bookmark types
-    load_users()
+    load_random_users()

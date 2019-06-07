@@ -199,7 +199,7 @@ def view_profile():
     user_id = session.get("user_id")
 
     #Get user's details
-    user_object = db.session.query(User).filter(User.user_id == user_id)
+    user = db.session.query(User).filter(User.user_id == user_id).one()
 
     going_details = []
     interested_details = []
@@ -217,7 +217,7 @@ def view_profile():
         for event in bookmarked_interested:
             interested_details.append(get_event_details(event.event_id))
 
-        return render_template("my_profile.html", going_details=going_details, interested_details=interested_details)
+        return render_template("my_profile.html", going_details=going_details, interested_details=interested_details, user=user)
 
     else:
         return("Please log in to view profile.")

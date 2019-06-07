@@ -264,7 +264,7 @@ def get_interested(event_id):
 
     for bookmark in bookmarks:
         user = bookmark.user
-        attendees.append(user)
+        interested.append(user)
 
     return interested
 

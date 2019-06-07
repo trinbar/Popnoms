@@ -25,6 +25,8 @@ class User(db.Model):
     username = db.Column(db.String(50), nullable=False,)
     password = db.Column(db.String(50), nullable=False,)
     email = db.Column(db.String(75), nullable=False,)
+    lrg_pic = db.Column(db.String(200),)
+    thumb_pic = db.Column(db.String(200),)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
