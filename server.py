@@ -2,12 +2,17 @@
 
 # from jinja2 import StrictUndefined
 
-from flask import Flask, render_template, request, flash, redirect, session, jsonify, url_for
-from flask_debugtoolbar import DebugToolbarExtension
+from flask import (Flask, render_template, request, flash, redirect, session,
+    jsonify, url_for)
 
+from flask_debugtoolbar import DebugToolbarExtension
 from model import db, connect_to_db, User, Bookmark
 
-from eb_helper import (get_events, get_event_details, create_new_user, get_venue_details, get_venue_coordinates, add_bookmark_to_db, get_attendees, get_interested)
+from eb_helper import (
+    get_events, get_event_details, create_new_user, get_venue_details, 
+    get_venue_coordinates, add_bookmark_to_db, get_attendees,
+    get_interested)
+
 from mb_helper import (set_map_center, set_markers)
 
 import requests
@@ -136,7 +141,8 @@ def display_events():
     print(coordinates_list)
 
     return render_template("events.html", 
-                            events=events, location=location,
+                            events=events,
+                            location=location,
                             map_center=map_center,
                             coordinates_list=coordinates_list)
 
@@ -172,7 +178,12 @@ def view_event_details():
         interested = "Please log in to view interested list."
     
 
-    return render_template("event_details.html", details=details, username=username, bookmark=bookmark, attendees=attendees, interested=interested)
+    return render_template("event_details.html",
+                            details=details,
+                            username=username,
+                            bookmark=bookmark,
+                            attendees=attendees,
+                            interested=interested)
 
 
 @app.route("/bookmark_event", methods=["GET","POST"])
@@ -217,7 +228,10 @@ def view_profile():
         for event in bookmarked_interested:
             interested_details.append(get_event_details(event.event_id))
 
-        return render_template("my_profile.html", going_details=going_details, interested_details=interested_details, user=user)
+        return render_template("my_profile.html",
+                                going_details=going_details,
+                                interested_details=interested_details,
+                                user=user)
 
     else:
         return("Please log in to view profile.")

@@ -1,44 +1,49 @@
 {% extends 'base.html' %}
 
-{% block title %}PopNoms{% endblock %}
+{% block title %}PopNoms in {{ location }}{% endblock %}
 
 {% block content %}
-
-<div class="row">
-
-  <div class="col-xs-12 col-md-6">
-
-    <h3>PopNoms in {{ location }}</h3>
-      <ul class="events">
-        {% for event in events %}
-          <li id="listing-{{ event["event_id"] }}" data-event_id={{ event["event_id"] }} class="event-card"><a href="/event_details?event_id={{ event["event_id"]}}"><img src="{{ event["logo"]}}" style="width:60px;height:60px;border:0;"></a><br>
-            {{ event.name }}<br>
-            <span style="font-size: 65%;">{{ event.start_time }} to {{event["end_time"]}}</span>
-
-    
-        </li>
-        ,{% endfor %}
-      </ul>
-
-  </div>
-
-  <div class="col-xs-12 col-md-6">
-    <h3>Map will go here</h3>
-      <script 
-      src="https://code.jquery.com/jquery-3.4.1.js"
-      integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-      crossorigin="anonymous"></script>
-
+<div class="sidebar">
+<div class="sidebar-heading">
+  <h2>Popnoms in {{ location }}</h2>
+<!-- End "sidebar-heading" div -->
+</div>
+<!-- End "sidebar-heading"   -->
+    <ul id="listings" class="listings">
+    {% for event in events %}
+    <li id="listing-{{ event.event_id }}"
+        data-event_id={{ event.event_id }}
+        class="card">
+        <a href="/event_details?event_id={{ event.event_id }}" class="title">
+        <img src=" {{ event["logo"] }}" style="width:60px; height: 60px;">
+        {{ event.name }}</span></a><br>
+          <span style="font-size: 90%;">{{ event.start_time }} to {{ event.end_time}}</span>
+    <!-- End list item -->
+    </li>
+    <!-- End for events for loop -->
+    <span style="font: #ffffff;">,</span>{% endfor %}
+    <!-- End unordered list -->
+    </ul>
+  <!-- End "sidebar" div -->
+</div>
   
-    <div id='map' style='width: 500px; height: 600px;'></div>
-      <script>
+<!-- JQuery script -->
+ <script 
+    src="https://code.jquery.com/jquery-3.4.1.js"
+    integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous">
+ </script>
+
+  <div id="map" style="left:40%; width: 60%;position: absolute;">
+
+
+   <!-- Script tag for Mapbox data, geoJSON -->
+   <script>
 
       //Mapbox default accessToken
       mapboxgl.accessToken = "pk.eyJ1IjoidHJpbmJhciIsImEiOiJjanZ3emhpNXoxZW9kNDRwMWtzaWpwNm8xIn0.2201lSCmgIMWpQndN1igLg";
 
       window.map_center = {{ map_center }}
-
-     
 
       window.geojson = {
         id: 'places',
@@ -61,91 +66,12 @@
       ]
       };
       console.log(geojson)
-      
-       //Display map using map_center of location query
-      const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: map_center,
-        zoom: 10.5
-      });
+    </script>
 
-      let markerMap = {}
+    <!-- Script tag for JS file -->
+    <script src="/static/mapbox.js"></script>
 
-      //add markers to map
-      geojson.features.forEach(function(marker) {
-        //create an HTML element for each feature
-        let popup = new mapboxgl.Popup({ offset: 25 })
-          .setHTML('<a href="'+ marker.marker.event_url +'">' + marker.marker.event_name + '</a>');
-
-        let el = document.createElement('div');
-        el.className = 'marker';
-        el.dataset.event_id = marker.properties.event_id;
-
-        el.addEventListener("click", function(evt) {
-          // 3. Highlight listing in sidebar (and remove highlight for all other listings)
-              var activeItem = document.querySelectorAll('.event-card.active');
-              if (activeItem[0]) {
-                activeItem[0].classList.remove('active');
-              }
-
-              // Select the correct list item using the found index and add the active class
-              var listing = document.getElementById('listing-' + evt.target.dataset.event_id);
-              if (listing) {
-                listing.classList.add('active')
-              };
-           });
-            
-        //make a marker for each feature and add to map
-        let markerInstance = new mapboxgl.Marker(el);
-        markerMap[marker.properties.event_id] = markerInstance
-
-        markerInstance.setLngLat(marker.marker.coordinates)
-        .setPopup(popup)
-        .addTo(map);
-      });
-
-      function getMarkerForEventId(event_id) {
-        return geojson.features.find(function (feature) {
-          return feature.properties.event_id === event_id
-        })
-      }
-
-      let listings = document.querySelectorAll(".event-card");
-
-      for (let i = 0; i < listings.length; i++) {
-        listings[i].addEventListener("click", function(evt) {
-            let eventId = evt.target.dataset.event_id;
-            let marker = getMarkerForEventId(eventId);
-            console.log(marker);
-            flyToStore(marker);
-             var activeItem = document.querySelectorAll('.event-card.active');
-              if (activeItem[0]) {
-                activeItem[0].classList.remove('active');
-              }
-
-              // Select the correct list item using the found index and add the active class
-              var listing = document.getElementById('listing-' + eventId);
-              if (listing) {
-                listing.classList.add('active')
-              };
-        })
-      }
-
-      function flyToStore(currentFeature) {
-        map.flyTo({
-          center: currentFeature.marker.coordinates,
-          zoom: 15
-        });
-        let marker = markerMap[currentFeature.properties.event_id];
-        console.log(marker);
-        marker.togglePopup()
-      }
-
-
-</script>
-
-    </div>
-</div>
+  <!-- End div="map" -->
+  </div>
 
 {% endblock %}

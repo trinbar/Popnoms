@@ -16,17 +16,19 @@ def create_random_user():
     response = requests.get(randomapi_url)
     
     data = response.json()
-    
+ 
     for user in data["results"]:
         user_details = {}
 
         name = user["name"]["first"].title() + " " + user["name"]["last"].title()
+        username = user["login"]["username"]
         email = user["email"]
         password = "password"
         lrg_pic = user["picture"]["large"]
         thumb_pic = user["picture"]["thumbnail"]
 
         user_details["name"] = name
+        user_details["username"] = username
         user_details["email"] = email
         user_details["password"] = password
         user_details["lrg_pic"] = lrg_pic
@@ -42,25 +44,30 @@ def load_random_users():
         user_list.append(create_random_user())
 
     for user in user_list:
-        user = User(email=user["email"], username=user["name"], 
+        user = User(email=user["email"], name=user["name"], username = user["username"],
                     password=user["password"], lrg_pic=user["lrg_pic"],
                     thumb_pic=user["thumb_pic"])
+
         db.session.add(user)
 
     db.session.commit()
 
 # Function load_fake_bookmarks for demonstration purposes only.
 def load_fake_bookmarks():
-    """See    # timestamp = datetime.now()
+    """See fake bookmarks into popnoms db. Do this after seeding database and before running app."""
+
+    # timestamp = datetime.now()
 
     # for x in range(15):
-    #     bookmark = Bookmark(event_id="58032445607", user_id=x, bookmark_type = "going", timestamp=timestamp)
+    #     bookmark = Bookmark(event_id="58032445607", user_id=x,
+                              # bookmark_type = "going", timestamp=timestamp)
 
     # for y in range(12):
-    #     bookmark = Bookmark(event_id="58032445607", user_id=x, bookmark_type = "interested", timestamp=timestamp)d fake bookmarks into popnoms db. Do this after seeding database and before running app."""
+    #     bookmark = Bookmark(event_id="58032445607", user_id=x,
+                              # bookmark_type = "interested", timestamp=timestamp)
 
-    
     pass
+                              
 
 if __name__ == "__main__":
  

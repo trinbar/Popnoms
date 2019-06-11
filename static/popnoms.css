@@ -1,84 +1,85 @@
-h1, h2, h3, .navbar-brand { font-family: "Helvetica"; }
-      
-#homepage-title {
-  margin: 0;
-  top: 0.5em;
-  width: 100%;
-  text-align: center;
-  color: black;
-  font-weight: 400;
-  font-size: 500%;
-}
 
-html, body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  background-color: #cccccc;
-  color: black;
-}
 
-#homepage-block {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  /*background-image: url("");*/
-  background-size: 100%;
-}
-
-#extending {
-              margin: 0px;
-              padding: 0px;
-              background-color: #cccccc;
-              width: 100%;
-              height: 100%;
-           }
-
-.spaced {
-  margin-left:20px; 
-  margin-top: 20px;
-}
-
-/*MAPBOX VERSION 1: Map marker*/
-.marker {
-  background-image: url('https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png');
-  background-size: cover;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.mapbox-popup {
-  max-width: 200px;
-  height: 200px;
-  overflow-y: scroll;
-  font: 400 15px/22px 'Source Sans Pro', 'Helvetica Neue', Sans-serif;
-  padding: 0;
-}
-
-/*MAPBOX VERSION 2: Map sidebar and marker*/
+/*MAPBOX: Map sidebar and marker*/
 body {
-  background: #404040;
+  background: #ffffff;
   color: #f8f8f8;
   font: 500 20px/26px 'Helvetica Neue', Helvetica, Arial, Sans-serif;
   margin: 0;
-  padding: 0;
+  padding-top: 100px;
   -webkit-font-smoothing: antialiased;
 }
 
 /* The page is split between map and sidebar - the sidebar gets 1/3, map
 gets 2/3 of the page. You can adjust this to your personal liking. */
 .sidebar {
-  width: 33.3333%;
+  width: 40%;
+  height: 80%;
+  border-right: 1px color #325D88;
 }
 
+.sidebar-heading {
+  border-top: 10px;
+  background-color: #325D88;
+}
+
+.listings {
+    height: 100%;
+    overflow: auto;
+    padding-bottom: 60px;
+}
+
+.listings .card {
+  display: block;
+  border-bottom: 1px solid #eee;
+  padding: 10px;
+  text-decoration: none;
+}
+
+.listings .card .title {
+  display: block;
+  font-weight: 700;
+  font-color: #29ABE0;
+}
+
+.listings .card.active {
+  display: block;
+  border-bottom: 1px solid #eee;
+  padding: 10px;
+  text-decoration: none;
+  border-color: #325D88;
+  box-shadow: 5px 5px 5px grey;
+}
+
+/*Old Event card in details and user profile - change JS event listeners*/
+.event-card {
+  background-color: #ffffff;
+  margin: 01x;
+  padding: 1px;
+  width: 80%;
+  border-color: #EA7A70;
+}
+
+.event-card.active {
+  background-color: #ffffff;
+  margin: 1px;
+  padding: 1px;
+  width: 80%;
+  border-color: #EA7A70;
+  box-shadow: 2px 2px 1px 
+}
+
+
 .map {
-  border-left: 1px solid #fff;
   position: absolute;
-  left: 33.3333%;
-  width: 66.6666%;
+  left: 40%;
+  width: 60%;
+}
+
+.mapboxgl-map {
+  position: absolute;
+  left: 40%;
+  width: 60%;
   top: 0;
   bottom: 0;
 }
@@ -90,17 +91,13 @@ gets 2/3 of the page. You can adjust this to your personal liking. */
   box-sizing: border-box;
 }
 
-/*Event card in details and user profile*/
-.event-card {
-  background-color: #ffffff;
-  margin: 0px;
-  padding: 0px;
-  width: 80%;
-  border-color: #000000;
-}
-
-.event-card.active {
-  background-color: yellow;
+.mapboxgl-marker {
+  background-image: url('/static/mapmarker.png');
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 /*MAPBOX VERSION 2: Sidebar*/
@@ -136,9 +133,8 @@ a:hover {
 }
 
 .sidebar {
-  position: absolute;
   width: 33.3333%;
-  height: 100%;
+  height: 70%;
   top: 0;
   left: 0;
   overflow: hidden;
@@ -166,7 +162,7 @@ a:hover {
 }
 
 .listings {
-  height: 100%;
+  height: 80%;
   overflow: auto;
   padding-bottom: 60px;
 }
@@ -222,6 +218,14 @@ a:hover {
 }
 
 /* Marker tweaks */
+.mapboxgl-marker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    will-change: transform;
+    background-image: '/static/popnom.jpg';
+}
+
 .mapboxgl-popup-close-button {
   display: none;
 }

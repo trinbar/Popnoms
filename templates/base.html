@@ -2,43 +2,63 @@
 <html lang="en">
 <head>
 
+<!-- CSS from Bootswap - Sandstone -->
+<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/sandstone/bootstrap.min.css"
+    rel="stylesheet">
+
 <!-- CSS from popnoms.css -->
-  <link rel="stylesheet"
-        href="/static/popnoms.css">
+  <link rel="stylesheet" href="/static/popnoms.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
 
 
-  <!-- MAPBOX VERSION 1 Map tags that belong in head element-->
-  <meta charset='utf-8' />
-    <title>PopNoms Map</title>
-  <meta name='viewport' 
-        content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
-  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
+<!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="position: fixed; width:100%; z-index: 1;">
+  <a class="navbar-brand" href="/">PopNoms</a>
 
-  <style>
-  body {
-    margin: 0;
-    padding: 0;
-  }
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-  #map {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-  }
+  <div class="collapse navbar-collapse" id="navbarColor01">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+      </li>
+    </ul>
+  </div>
 
-  .mapboxgl-popup {
-    max-width: 400px;
-    font:12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  }
-      
-</style>
+  <div class="collapse navbar-collapse" id="navbarColor01">
+    <ul class="navbar-nav ml-auto">
+      {% if "user_id" in session %}
+      <li class="nav-item">
+        <a class="nav-link" href="/my_profile">My Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">Logout</a>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="/registration_form">Register</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/login_form">Login</a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+<!-- End Navbar -->
 
-<!-- MAPBOX VERSION 2 Map tags that belong in head element -->
+<!-- MAPBOX -->
 
-<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
-<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
+<meta charset="utf-8">
+
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'>
+</script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet'/>
 
 <!-- JQuery script tag -->
 <script
@@ -48,71 +68,22 @@
 
 <title>PopNoms</title>
 
-<!-- Bootstrap -->
-<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/cyborg/bootstrap.min.css"
-      rel="stylesheet">
-<link href='http://fonts.googleapis.com/css?family=Helvetica' rel='stylesheet' type='text/css'>
 </head>
 
 
 <body>
-<!-- Navigation Bar -->
-<nav class="navbar navbar-inverse" style="margin-bottom: 0px">
-<div class="container-fluid">
 
-<!-- Brand and toggle get grouped for better mobile display -->
-<div class="navbar-header">
-    <button type="button"
-            class="navbar-toggle collapsed"
-            data-toggle="collapse"
-            data-target="#bs-example-navbar-collapse-1">
-
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-
-    <a class="navbar-brand" href="/">PopNoms</a>
-  </div>
-
-  <!-- Collect the nav links, forms, and other content for toggling -->
-  <div class="collapse navbar-collapse"
-       id="bs-example-navbar-collapse-1">
-
-    <!-- Left-hand buttons placeholder -->
-    <!-- <ul class="nav navbar-nav">
-      <li><a href="/about">About</a></li>
-      <li><a href="/all-popnoms">View All Popnoms</a></li>
-    </ul> -->
-
-    <ul class="nav navbar-nav navbar-right">
-      {% if "user_id" in session %}
-        <li><a href="/my_profile">My Profile</a></li>
-        <li><a href="/logout">Logout</a></li>
-      {% else %}
-        <li><a href="/registration_form">Register</a></li>
-        <li><a href="/login_form">Login</a></li>
-      {% endif %}
-    </ul>
-
-  </div>
-</div>
-</nav>
-<!-- End of Navigation Bar -->
 
 <!-- /.container-fluid -->
 
 <div id="extending">
   {% for flash in get_flashed_messages() %}
-    <div class="alert alert-danger" style="width:90%; margin:0 auto;">
+    <div class="alert alert-dismissible alert-light" style="width:80%; margin:0 auto;">
       {{ flash }}</div>
   {% endfor %}
 
 {% block content %}
 {% endblock %}
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
 </body>
 </html>
