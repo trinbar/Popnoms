@@ -3,7 +3,7 @@ const map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/streets-v11',
   center: map_center,
-  zoom: 10.5
+  zoom: 12
 });
 
 let markerMap = {}
@@ -18,19 +18,19 @@ geojson.features.forEach(function(marker) {
     el.className = 'marker';
     el.dataset.event_id = marker.properties.event_id;
 
-  el.addEventListener("click", function(evt) {
-  // 3. Highlight listing in sidebar (and remove highlight for all other listings)
-    var activeItem = document.querySelectorAll('.event-card.active');
-    if (activeItem[0]) {
-      activeItem[0].classList.remove('active');
-    }
+    el.addEventListener("click", function(evt) {
+    // 3. Highlight listing in sidebar (and remove highlight for all other listings)
+      let activeItem = document.querySelectorAll('.card.active');
+      if (activeItem[0]) {
+        activeItem[0].classList.remove('active');
+      }
 
-    // Select the correct list item using the found index and add the active class
-    var listing = document.getElementById('listing-' + evt.target.dataset.event_id);
-    if (listing) {
-      listing.classList.add('active')
-    };
-  });
+      // Select the correct list item using the found index and add the active class
+      let listing = document.getElementById('listing-' + evt.target.dataset.event_id);
+        if (listing) {
+          listing.classList.add('active')
+        };
+    });
   
 //make a marker for each feature and add to map
 let markerInstance = new mapboxgl.Marker(el);
@@ -47,21 +47,20 @@ function getMarkerForEventId(event_id) {
   })
   }
 
-let listings = document.querySelectorAll(".event-card");
+let listings = document.querySelectorAll(".card");
 
 for (let i = 0; i < listings.length; i++) {
   listings[i].addEventListener("click", function(evt) {
     let eventId = evt.target.dataset.event_id;
     let marker = getMarkerForEventId(eventId);
-    console.log(marker);
     flyToStore(marker);
-     var activeItem = document.querySelectorAll('.event-card.active');
+     let activeItem = document.querySelectorAll('.card.active');
       if (activeItem[0]) {
         activeItem[0].classList.remove('active');
       }
 
   // Select the correct list item using the found index and add the active class
-  var listing = document.getElementById('listing-' + eventId);
+  let listing = document.getElementById('listing-' + eventId);
   if (listing) {
     listing.classList.add('active')
   };

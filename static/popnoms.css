@@ -13,10 +13,45 @@ body {
 /* The page is split between map and sidebar - the sidebar gets 1/3, map
 gets 2/3 of the page. You can adjust this to your personal liking. */
 .sidebar {
+  position: fixed;
+  right: 60%;
   width: 40%;
-  height: 80%;
-  border-right: 1px color #325D88;
+  height: 100%;
+  overflow: auto;
+  margin-top: 50px;
 }
+
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+  border-left: 0;
+  background: #EB361F;
+}
+
+::-webkit-scrollbar-track {
+  background: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #EB361F;
+  border-radius: 0;
+}
+
+a {
+  color: #404040;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #101010;
+}
+
+/*.pad2 {
+  padding: 20px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}*/
 
 .sidebar-heading {
   border-top: 10px;
@@ -25,24 +60,18 @@ gets 2/3 of the page. You can adjust this to your personal liking. */
 
 .listings {
     height: 100%;
+    width: 100%;
     overflow: auto;
-    padding-bottom: 60px;
+    text-overflow: clip clip;
+    padding-bottom: 0px;
 }
 
-.listings .card {
-  display: block;
-  border-bottom: 1px solid #eee;
-  padding: 10px;
-  text-decoration: none;
+.card.active {
+  border-color: #325D88;
+  box-shadow: 5px 5px 5px grey;
 }
 
-.listings .card .title {
-  display: block;
-  font-weight: 700;
-  font-color: #29ABE0;
-}
-
-.listings .card.active {
+/*/*.listing-card .active {
   display: block;
   border-bottom: 1px solid #eee;
   padding: 10px;
@@ -51,23 +80,21 @@ gets 2/3 of the page. You can adjust this to your personal liking. */
   box-shadow: 5px 5px 5px grey;
 }
 
-/*Old Event card in details and user profile - change JS event listeners*/
 .event-card {
-  background-color: #ffffff;
-  margin: 01x;
-  padding: 1px;
-  width: 80%;
-  border-color: #EA7A70;
+  display: block;
+  border-bottom: 1px solid #eee;
+  padding: 10px;
+  text-decoration: none;
 }
 
 .event-card.active {
-  background-color: #ffffff;
-  margin: 1px;
-  padding: 1px;
-  width: 80%;
-  border-color: #EA7A70;
-  box-shadow: 2px 2px 1px 
-}
+  display: block;
+  border-bottom: 1px solid #eee;
+  padding: 10px;
+  text-decoration: none;
+  border-color: #325D88;
+  box-shadow: 5px 5px 5px grey;
+}*/
 
 
 .map {
@@ -84,12 +111,6 @@ gets 2/3 of the page. You can adjust this to your personal liking. */
   bottom: 0;
 }
 
-.pad2 {
-  padding: 20px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
 
 .mapboxgl-marker {
   background-image: url('/static/mapmarker.png');
@@ -132,14 +153,6 @@ a:hover {
   color: #101010;
 }
 
-.sidebar {
-  width: 33.3333%;
-  height: 70%;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-  border-right: 1px solid rgba(0, 0, 0, 0.25);
-}
 
 .pad2 {
   padding: 20px;
@@ -147,8 +160,8 @@ a:hover {
 
 .map {
   position: absolute;
-  left: 33.3333%;
-  width: 66.6666%;
+  left: 40;
+  width: 60%;
   top: 0;
   bottom: 0;
 }
@@ -161,13 +174,13 @@ a:hover {
   padding: 0 10px;
 }
 
-.listings {
-  height: 80%;
+./*listings {
+  height: 100%;
   overflow: auto;
-  padding-bottom: 60px;
-}
+  padding-bottom: 0;
+}*/
 
-.listings .item {
+/*.listings .item {
   display: block;
   border-bottom: 1px solid #eee;
   padding: 10px;
@@ -189,23 +202,7 @@ a:hover {
 
 .listings .item.active {
   background-color: #f8f8f8;
-}
-
-::-webkit-scrollbar {
-  width: 3px;
-  height: 3px;
-  border-left: 0;
-  background: rgba(0, 0, 0, 0.1);
-}
-
-::-webkit-scrollbar-track {
-  background: none;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #00853e;
-  border-radius: 0;
-}
+}*/
 
 .clearfix { display: block; }
 
