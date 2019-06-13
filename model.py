@@ -23,11 +23,14 @@ class User(db.Model):
     
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True,)
     name = db.Column(db.String(100), nullable=False,)
-    username = db.Column(db.String(50), nullable=False,)
+    username = db.Column(db.String(50),)
     password = db.Column(db.String(50), nullable=False,)
     email = db.Column(db.String(75), nullable=False,)
     lrg_pic = db.Column(db.String(200),)
     thumb_pic = db.Column(db.String(200),)
+    location = db.Column(db.String(500),)
+    join_date = db.Column(db.String(5),)
+
 
     def __repr__(self):
         """Provide helpful representation when printed."""

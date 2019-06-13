@@ -4,43 +4,154 @@
 
 {% block content %}
 
-<div class="row" align=center>
-
-    <img src={{user.lrg_pic}}>
-    
-    <h1>My profile</h1>
-
-<div class="row" align=center>
-
-  <div class="col-xs-12 col-md-6" align=left>
-
-    <h3>Popnoms you are attending</h3>
-    <ul class="events">
-        {% for details in going_details %}
-    <li class="event-card"><a href="/event_details?event_id={{ details.event_id }}"><img src="{{ details.logo }}"" style="width: 60px; height:60px; border:0;"></a><br>{{ details.name }}<br>
-        <span style="font-size: 65%;">{{ details.start_time }} to {{ details.end_time }}</span>
-    </li>
-    {% endfor %}
-    </ul>
- </div>
-
- <h3>Popnoms you are interested in</h3>
-
- <div class="col-xs-12 col-md-6" align=left>
-
-    <ul class="events">
-    {% for details in interested_details %}
-    <li class="event-card"><a href="/event_details?event_id={{ details.event_id }}"><img src="{{ details.logo }}" style="width:60px; height:60px; border:0;"></a><br>
-    {{ details.name }}<br>
-    <span style="font-size: 65%;">
-        {{ details.start_time }} to {{ details.end_time }}
-    </span>
-    </li>
-    , {% endfor %}
-    </ul>
-
+<!-- Start of container div -->
+<div class="container" align="center">
+    <!-- Start of main profile card with large picture, name, location, joined -->
+    <div class="card" style="max-width: 100%;" align="center">
+        <!-- Start of row -->
+        <div class="row" style="height: 100%; border: 2px solid #007bff; box-shadow: 5px 6px 0px #007bff; padding-top: 20px; padding-bottom: 20px;">
+            <!-- Start of first column includes profile pic -->
+            <div class="col-md-4">
+                <!-- Start of profile pic wrapper div -->
+                <div class="profile-pic-wrapper">
+                    <!-- Profile pic -->
+                    <img src={{user.lrg_pic}} style="height: 200px; width: 200px; border-radius: 150px; border: 2px solid #007bff;">
+                <!-- End of profile pic wrapper -->
+                </div>
+            <!-- End of col-md-4 div -->
+            </div>
+            <!-- Start of second column includes name, edit profile button, bio -->
+            <div class="col-md-4">
+                <!-- Start card body div incl name, edit button, bio -->
+                <div class="card-body">
+                    <!-- Card title: user name -->
+                    <h1 class="profile-name" style="font-size: 3rem; font-weight: bold; white-space: nowrap;">
+                        {{ user.name }}
+                    </h1>
+                    <br>
+                    <!-- Edit profile button -->
+                    <button type="button" class="btn btn-primary">
+                        EDIT PROFILE
+                    <!-- End of Edit profile button -->
+                    </button>
+                    <br><br>
+                    <!-- Start of bio div -->
+                    <div class="card-text" style="font-style: italic; white-space: nowrap;">
+                    <!-- End of bio div -->
+                    Adventurous cook who loves searching for recipe inspiration.<br>
+                    Favorite fruit is durian. Weirdest meal was casu marzu.
+                    </div>
+                <!-- End card body div -->
+                </div>
+            <!-- End of second column div -->
+            </div>
+            <!-- Start of third column includes location, and joined date div -->
+            <div class="col-md-4">
+                <!-- Start of card body  -->
+                <div class="card-body">
+                    <!-- User Location -->
+                    <h5 class="card-title">
+                        Location:
+                    </h5>
+                        <p class="card-text">
+                            {{ user.location }}
+                        </p>
+                        <br><br>
+                    <!-- User join date -->
+                    <h5 class="card-title">
+                        Joined:
+                    </h5>
+                        <p class="card-text">
+                            {{ user.join_date }}
+                        </p>
+                <!-- End of card body div -->
+                </div>
+            <!-- End of third column div -->
+            </div>
+        <!-- End of row div -->
+        </div>
+    <!-- End of main profile card div -->
+    </div>
+    <!-- Gutter -->
+    <div class="grid-row-gap" style="height: 50px;">
+    </div>
+    <!-- Start new row of cards -->
+    <div class="row" style="height: 100%;">
+        <!-- Start of column -->
+        <div class="col-md-6">
+            <!-- Start of first card in row -->
+            <div class="card mb-3" style="border: 2px solid #007bff;">
+                <!-- Start of card body div -->
+                <div class="card-body">
+                    <!-- Card title for Attending list -->
+                    <h4 class="card-title">
+                        PopNom Events You Are Attending
+                    </h4>
+                    {% for details in going_details %}
+                    <div class="media" style="border: 0.5px solid grey; padding: 8px;">
+                        <!-- Event Logo Image with link -->
+                        <a href="/event_details?event_id={{ details.event_id }}">
+                            <img src="{{ details.logo }}" style="width: 64px; height: 64px; border-radius: 2px;">
+                        </a>
+                        <!-- Start of media body -->
+                        <div class="media-body">
+                            <!-- Event name -->
+                            <h6 class="mt-0">
+                                {{ details.name }}
+                            </h6>
+                            {{ details.start_time }} to {{ details.end_time }}
+                        <!-- End of media body div -->
+                        </div>
+                    <!-- End of media div -->
+                    </div>
+                    {% endfor %}
+                <!-- End of card body div -->
+                </div>
+            <!-- End of first card in row -->
+            </div>
+        <!-- End of row div -->
+        </div>
+        <div class="col-md-6">
+        <!-- Start new row of cards -->
+        <div class="row" style="height: 100%;">
+            <!-- Start of second card in row -->
+            <div class="card mb-3" style="border: 2px solid #007bff;">
+                <!-- Start of card body div -->
+                <div class="card-body">
+                    <!-- Card title for Interested list -->
+                    <h4 class="card-title">
+                        PopNom Events You Are Interested In
+                    </h4>
+                    {% for details in interested_details %}
+                    <div class="media" style="border: 0.5px solid grey; padding: 8px;">
+                        <!-- Event Logo Image with link -->
+                        <a href="/event_details?event_id={{ details.event_id }}">
+                            <img src="{{ details.logo }}" style="width: 64px; height: 64px; border-radius: 2px;">
+                        </a>
+                        <!-- Start of media body -->
+                        <div class="media-body">
+                            <!-- Event name -->
+                            <h6 class="mt-0">
+                                {{ details.name }}
+                            </h6>
+                            {{ details.start_time }} to {{ details.end_time }}
+                        <!-- End of media body div -->
+                        </div>
+                    <!-- End of media div -->
+                    </div>
+                    {% endfor %}
+                <!-- End of card body div -->
+                </div>
+            <!-- End of second card in row -->
+            </div>
+        <!-- End of row -->
+        </div>
+        <!-- End of second column in row -->
+        </div>
+    <!-- End row of cards div -->
+    </div>
+<!-- End of container div -->
 </div>
 
-</div>
 
 {% endblock %}

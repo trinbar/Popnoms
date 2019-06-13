@@ -26,6 +26,8 @@ def create_random_user():
         password = "password"
         lrg_pic = user["picture"]["large"]
         thumb_pic = user["picture"]["thumbnail"]
+        location = user["location"]["city"].title() + ", " + user["location"]["state"].title()
+        join_date = user["registered"]["date"][:4]
 
         user_details["name"] = name
         user_details["username"] = username
@@ -33,6 +35,8 @@ def create_random_user():
         user_details["password"] = password
         user_details["lrg_pic"] = lrg_pic
         user_details["thumb_pic"] = thumb_pic
+        user_details["location"] = location
+        user_details["join_date"] = join_date
 
         return user_details
 
@@ -46,7 +50,7 @@ def load_random_users():
     for user in user_list:
         user = User(email=user["email"], name=user["name"], username = user["username"],
                     password=user["password"], lrg_pic=user["lrg_pic"],
-                    thumb_pic=user["thumb_pic"])
+                    thumb_pic=user["thumb_pic"], location=user["location"], join_date=user["join_date"])
 
         db.session.add(user)
 
