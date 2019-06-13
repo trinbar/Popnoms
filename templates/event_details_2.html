@@ -4,12 +4,12 @@
 
 {% block content %}
 
-<!-- Start of container -->
+<!-- Start of container div -->
 <div class="container" align="center">
     <!-- Start of card with event logo image, name, start time, address, buttons -->
-    <div class="card mb-3" style="max-width: 100%;" align="center">
+    <div class="card mb-3" style="max-width: 100%; border: 2px solid #007bff; box-shadow: 5px 6px 0px #007bff; padding: 20px;" align="center">
         <!-- Start of row -->
-        <div class="row" style="height: 100%">
+        <div class="row" style="height: 100%" >
             <!-- Start of column includes event logo -->
             <div class="col-md-4">
               <img src="{{ details.logo }}" class="card-img" style="width: 500px; height: 350px;">
@@ -20,7 +20,9 @@
                 <!-- Start of card body -->
                 <div class="card-body">
                     <!-- Card title: name -->
-                    <h2 class="card-title">{{ details.name }}</h2>
+                    <h2 class="card-title">
+                        {{ details.name }}
+                    </h2>
                         <!-- Card text: Time and location -->
                         <p class="card-text">
                             <h5>When:</h5>
@@ -84,7 +86,7 @@
     <!-- End of first card mb-3 div -->
     </div>
     <!-- Start of second card includes description and buttons -->
-    <div class="card mb-3" style="max-width: 100%;" align="left">
+    <div class="card mb-3" style="max-width: 100%; border: 2px solid #007bff; padding-top: 20px; padding-bottom: 20px;" align="left">
         <!-- Start of row -->
         <div class="row" style="height: 100%">
             <!-- Start of column includes event description -->
@@ -105,7 +107,7 @@
                 <!-- Start of card body includes user lists -->
                 <div class="card-body">
                     <!-- Card first title going -->
-                    <h5 class="card-title">PopNom Users Attending This Event</h5>
+                    <h5 class="card-title" style="color: #007bff;">PopNom Users Attending This Event</h5>
                         <!-- Start row of going user thumbnails -->
                         <div class="row" style="height: 100%; border: 0;">
                             {% for attendee in attendees %}
@@ -121,7 +123,7 @@
                         <!-- Whitespace between user lists -->
                         <br>
                     <!-- Card second title interested -->
-                    <h5 class="card-title">PopNom Users Interested In This Event</h5>
+                    <h5 class="card-title" style="color: #007bff;">PopNom Users Interested In This Event</h5>
                     <!-- Start row of interested user thumbnails -->
                     <div class="row" style="height: 100%; border:0;">
                         {% for attendee in interested %}

@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div align=center>
-  <h2 id="homepage-title">Search PopNoms</h2>
+<body style="background-image: url(static/popnom_homepage.png)">
+  <div align=center>
+    <h3 id="title" style="font-family: 'Arvo', serif; font-size: 105px; font-style: bold; color: yellow;">
+    <b>NO MORE<br>FOOD FOMO</b></h3>
   <form action="/events" method="POST">
-    <br>
+    <br>  
     In
       <input class="location" type="location" name="location">
     On/Around
@@ -20,6 +22,7 @@
     <input class="submit" type="submit" name="submit" value="Search">
 </form>
 </div>
+</body>
 
 <!-- Comments:
 - Place div (lines 4-22) onto a background image
