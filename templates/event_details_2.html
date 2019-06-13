@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block title %}PopNoms{% endblock %}
+
+{% block content %}
+
+<!-- Start of container -->
+<div class="container" align="center">
+    <!-- Start of card with event logo image, name, start time, address, buttons -->
+    <div class="card mb-3" style="max-width: 100%;" align="center">
+        <!-- Start of row -->
+        <div class="row" style="height: 100%">
+            <!-- Start of column includes event logo -->
+            <div class="col-md-4">
+              <img src="{{ details.logo }}" class="card-img" style="width: 500px; height: 350px;">
+            <!-- End of column includes event logo -->
+            </div>
+            <!-- Start of column includes name, start time, location, buttons -->
+            <div class="col-md-8" style="left: 8%;">
+                <!-- Start of card body -->
+                <div class="card-body">
+                    <!-- Card title: name -->
+                    <h2 class="card-title">{{ details.name }}</h2>
+                        <!-- Card text: Time and location -->
+                        <p class="card-text">
+                            <h5>When:</h5>
+                            {{ details.start_time }} ({{ details.start_time_tz }})
+                            <br>
+                            <br>
+                            <h5>Location:</h5>
+                            {{ details.address }}
+                        <!-- End of card text: Time and location-->
+                        </p>
+                        <br>
+                    {% if "user_id" in session %}
+                    <h5 class="card-title">Bookmark Event</h5>
+                        <!-- Card text: buttons -->
+                        <p class="card-text">
+                            <!-- Form - two radio buttons -->
+                            <form action="/bookmark_event" method="POST">
+                                <!-- Button 1: Going -->
+                                <input type="radio" class="bookmark" name="going_bookmark" value="going" data-eventid={{ details.event_id }} {% if bookmark and bookmark.bookmark_type == 'going' %} checked {% endif %}>  I'm Going!
+                                <!-- Button 2: Interested -->
+                                <input type="radio" class="bookmark" name="interested_bookmark" value="interested" data-eventid={{ details.event_id }} {% if bookmark and bookmark.bookmark_type == 'interested' %} checked {% endif %}>  Interested
+                                <!-- End of form -->
+                            </form>
+                            <!-- AJAX that posts form inputs to server where it saves to db -->
+                                <script>
+                                    "use strict";
+                                    function validateForm() {
+                                        let bookmark = document.querySelector("bookmark");
+                                        if (bookmark.checked == true) {
+                                            console.log("true")
+                                            return true;
+                                         } else {
+                                            console.log("false")
+                                            return false
+                                           }
+                                    }
+                                    $(document).ready(
+                                        function() {
+                                        $(".bookmark").on("click", function(evt) {
+                                          let eventId = $(this).attr("data-eventid");
+                                          let bookmarkType = $(this).attr("value");
+                                          let payload = {"event_id": eventId,
+                                                       "bookmark_type": bookmarkType};
+                                            console.log(payload)
+                                          $.post("/bookmark_event", payload, validateForm);
+                                        });
+                                    });
+                                  </script>
+
+                    <!-- End of endif -->
+                    {% endif %}
+                        <!-- End of card text includes buttons-->
+                        </p>
+
+                <!-- End of first card-body div -->
+                </div>
+            <!-- End of first col-md-8 div -->
+            </div>
+        <!-- End of first row div -->
+        </div>
+    <!-- End of first card mb-3 div -->
+    </div>
+    <!-- Start of second card includes description and buttons -->
+    <div class="card mb-3" style="max-width: 100%;" align="left">
+        <!-- Start of row -->
+        <div class="row" style="height: 100%">
+            <!-- Start of column includes event description -->
+            <div class="col-md-6">
+                <!-- Start of card body -->
+                <div class="card-body">
+                    <!-- Start of card text includes description-->
+                    <p class="card-text">
+                    {{ details.description }}
+                    <!-- End of card-text p -->
+                    </p>
+                <!-- End of card-body div -->
+                </div>
+            <!-- End col-md-6 div -->
+            </div>
+            <!-- Start of column includes user lists -->
+            <div class="col-md-6" style="left: 8%;">
+                <!-- Start of card body includes user lists -->
+                <div class="card-body">
+                    <!-- Card first title going -->
+                    <h5 class="card-title">PopNom Users Attending This Event</h5>
+                        <!-- Start row of going user thumbnails -->
+                        <div class="row" style="height: 100%; border: 0;">
+                            {% for attendee in attendees %}
+                            <p class="card-text">
+                                <a href="/user_profile?user_id={{ attendee.user_id }}">
+                                    <img src="{{ attendee.thumb_pic}}" style="border-radius: 35px;">
+                                </a>
+                            <!-- End of card text p -->
+                            </p>
+                            {% endfor %}
+                        <!-- End of user thumbnail row div -->
+                        </div>
+                        <!-- Whitespace between user lists -->
+                        <br>
+                    <!-- Card second title interested -->
+                    <h5 class="card-title">PopNom Users Interested In This Event</h5>
+                    <!-- Start row of interested user thumbnails -->
+                    <div class="row" style="height: 100%; border:0;">
+                        {% for attendee in interested %}
+                        <p class="card-text">
+                            <a href="/user_profile?user_id={{ attendee.user_id }}">
+                                <img src="{{ attendee.thumb_pic}}" style="border-radius: 35px;">
+                            </a>
+                        <!-- End of card text p -->
+                        </p>
+                        {% endfor %}
+                <!-- End of card body div -->
+                </div>
+            <!-- End of col-md-6 div -->
+            </div>
+        <!-- End row div -->
+        </div>
+    <!-- End of card mb-3 div -->
+    </div>
+            
+
+<!-- End of container div -->
+</div>
+
+{% endblock %}

@@ -3,16 +3,40 @@
 <head>
 
 <!-- CSS from Bootswap - Sandstone -->
-<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/sandstone/bootstrap.min.css"
-    rel="stylesheet">
+<!-- <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/sandstone/bootstrap.min.css"
+    rel="stylesheet"> -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 <!-- CSS from popnoms.css -->
   <link rel="stylesheet" href="/static/popnoms.css">
   <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
 
 
+
+
+<!-- MAPBOX -->
+
+<meta charset="utf-8">
+
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'>
+</script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet'/>
+
+<!-- JQuery script tag -->
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+
+<title>PopNoms</title>
+
+</head>
+
+
+<body>
+
 <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="position: fixed; width:100%; z-index: 1;">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary navbar-default fixed-top">
   <a class="navbar-brand" href="/">PopNoms</a>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,35 +76,11 @@
 </nav>
 <!-- End Navbar -->
 
-<!-- MAPBOX -->
-
-<meta charset="utf-8">
-
-<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'>
-</script>
-<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet'/>
-
-<!-- JQuery script tag -->
-<script
-  src="https://code.jquery.com/jquery-3.4.1.js"
-  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-  crossorigin="anonymous"></script>
-
-<title>PopNoms</title>
-
-</head>
-
-
-<body>
-
-
 <!-- /.container-fluid -->
-
-<div id="extending">
-  {% for flash in get_flashed_messages() %}
-    <div class="alert alert-dismissible alert-light" style="width:80%; margin:0 auto;">
-      {{ flash }}</div>
-  {% endfor %}
+{% for flash in get_flashed_messages() %}
+  <div class="alert alert-dismissible alert-light" style="width:80%; margin:0 auto;">
+    {{ flash }}</div>
+{% endfor %}
 
 {% block content %}
 {% endblock %}

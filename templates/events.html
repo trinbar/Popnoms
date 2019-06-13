@@ -3,20 +3,21 @@
 {% block title %}PopNoms in {{ location }}{% endblock %}
 
 {% block content %}
+<!-- <div class="row" style="width: 100%; height: 150px;">
+  <h2>"Popnoms in {{ location }}</h2> -->
+<!-- </div> -->
 <div class="sidebar">
-<div class="sidebar-heading">
-  <h2>Popnoms in {{ location }}</h2>
-<!-- End "sidebar-heading" div -->
-</div>
-<!-- End "sidebar-heading"   -->
-    <ul id="listings" class="listings">
+  <section class="sidebar-heading" align="center">
+    <h2><b>    PopNoms in <i><u>{{ location }}</u></b></i></h2>
+  </section>
+    <ul id="listings" class="listing-group">
     {% for event in events %}
     <li id="listing-{{ event.event_id }}"
         data-event_id={{ event.event_id }}
         class="card">
         <a href="/event_details?event_id={{ event.event_id }}" class="title">
-        <img src=" {{ event["logo"] }}" style="width:60px; height: 60px;">
-        {{ event.name }}</span></a><br>
+        <img src=" {{ event["logo"] }}" style="width:60px; height: 60px;" align="left">
+            {{ event.name }}</span></a><br>
           <span style="font-size: 90%;">{{ event.start_time }} to {{ event.end_time}}</span>
     <!-- End list item -->
     </li>

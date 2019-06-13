@@ -178,7 +178,7 @@ def view_event_details():
         interested = "Please log in to view interested list."
     
 
-    return render_template("event_details.html",
+    return render_template("event_details_2.html",
                             details=details,
                             username=username,
                             bookmark=bookmark,
