@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+
+{% block title %}PopNoms in {{ location }}{% endblock %}
+
+{% block content %}
+
+<!-- Start of container div -->
+<div class="container">
+    <!-- Start of first row -->
+    <div class="row" style="height: 100%;">
+        <!-- Start of form -->
+        <form action ="/events" method="POST" align="center">
+            <h4>Eat adventurously in
+            <!-- City Search Input -->
+            <input class="location" type="location" 
+            name="location" placeholder="{{ location }}">
+            around
+            <!-- Date Keywoard dropdown menu -->
+            <select class="date_kw" type="date_kw" name="date_kw">
+                <option value="today">Today</option>
+                <option value="tomorrow">Tomorrow</option>
+                <option value="this_weekend">This Weekend</option>
+                <option value="this_week">This Week</option>
+                <option value="this_month">This Month</option>
+                <option value="next_month">Next Month</option>
+            <!-- End of Date Keyword dropdown menu -->
+            </select>
+            <!-- Search button -->
+            <input class="submit" type="submit" name="submit" value="Search">
+            </h4>
+        <!-- End of form -->
+        </form>
+    <!-- End of first row -->
+    </div>
+    <!-- Start of sidebar -->
+    <div class="sidebar" style="margin-top: 32px; padding-left: 34px;">
+        <!-- Start of UL event listings -->
+        <div id="listings" class="listing-group">
+            <!-- Start of for loop list of events -->
+            {% for event in events %}
+            <!-- Media div -->
+            <div id="listing-{{ event.event_id }}"
+                data-event_id={{ event.event_id }}
+                class="media" style="border-color: #dddddd;">
+                <!-- Event Logo Image with Link -->
+                <a href="/event_details?event_id={{ event.event_id}}">
+                    <img src="{{ event.logo }}" style="width: 64px; height:64px;" style="border-radius: 2px; margin: 8px;">
+                </a>
+                <!-- Start of media body -->
+                <div class="media-body" style="padding-left: 8px; padding-right: 8px;">
+                    <!-- Event name -->
+                    <h6 class="mt-0">
+                        {{ event.name }}
+                    </h6>
+                    {{ event.start_time }} to {{ event.end_time }} 
+                    <br>
+                    {{ event.address }}
+                <!-- End of media body -->
+                </div>
+            <!-- End of Media div -->
+            </div>
+            {% endfor %}
+        <!-- End of UL event listings -->
+        </div>
+    <!-- End of sidebar -->
+    </div>
+
+        <!-- JQuery script -->
+         <script 
+            src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous">
+        </script>
+
+        <!-- Start of map div -->
+        <div id="map" style="left: 40%; width: 50%; height: 80%; position: absolute; margin-top: 145px; margin-left: 64px; border-radius: 2px;">
+            <!-- Script tag for Mapbox data, geoJSON -->
+             <script>
+                "use strict";
+
+            //Mapbox default accessToken
+            mapboxgl.accessToken = "pk.eyJ1IjoidHJpbmJhciIsImEiOiJjanZ3emhpNXoxZW9kNDRwMWtzaWpwNm8xIn0.2201lSCmgIMWpQndN1igLg";
+
+            window.map_center = {{ map_center }}
+
+            window.geojson = {
+                id: 'places',
+                type: 'FeatureCollection',
+                features: [
+                {% for event in events %} {
+                    type: 'Feature',
+                    marker: {
+                        type: 'Point',
+                        coordinates: {{ coordinates_list[loop.index0] }},
+                        event_name: "{{event.name}}",
+                        event_url: "/event_details?event_id={{ event.event_id }}"
+                    },
+                properties: {
+                    title: 'Mapbox',
+                    description: "",
+                    event_id: "{{ event.event_id }}"
+                }
+            },{% endfor %}
+            ]
+            };
+
+            //Display map using map_center of location query
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v8',
+                center: map_center,
+                zoom: 12
+            });
+
+            let markerMap = {}
+
+            //add markers to map
+            geojson.features.forEach(function(marker) {
+                //create an HTML element for each infowindow on the marker
+                let popup = new mapboxgl.Popup({ offset: 25 })
+                .setHTML('<a href="'+ marker.marker.event_url +'">' + marker.marker.event_name + '</a>');
+
+                //create marker div and set each marker to respective event_id
+                let el = document.createElement('div');
+                el.className = 'marker';
+                el.dataset.event_id = marker.properties.event_id;
+
+                el.addEventListener("mouseover", function(evt) {
+                //Highlight media card in sidebar (and remove highlight for all other listings)
+                    let activeItem = document.querySelectorAll('.media.active');
+                        if (activeItem[0]) {
+                            activeItem[0].classList.remove('active');
+                        }
+
+                // Select the correct list item using the found index and add the active class
+                let listing = document.getElementById('listing-' + evt.target.dataset.event_id);
+                    if (listing) {
+                    listing.classList.add('active')
+                    };
+                    listing.scrollIntoView();
+                });
+  
+            //make a marker for each feature and add to map
+            let markerInstance = new mapboxgl.Marker(el);
+                markerMap[marker.properties.event_id] = markerInstance
+
+                markerInstance.setLngLat(marker.marker.coordinates)
+                    .setPopup(popup)
+                    .addTo(map);
+            });
+
+            function getMarkerForEventId(event_id) {
+                return geojson.features.find(function (feature) {
+                return feature.properties.event_id === event_id
+                })
+            }
+
+            let listings = document.querySelectorAll(".media");
+
+            for (let i = 0; i < listings.length; i++) {
+                listings[i].addEventListener("mouseover", function(evt) {
+                    let eventId = evt.target.dataset.event_id;
+                    let marker = getMarkerForEventId(eventId);
+                    flyToStore(marker);
+                    let activeItem = document.querySelectorAll('.media.active');
+                    if (activeItem[0]) {
+                        activeItem[0].classList.remove('active');
+            }
+
+            // Select the correct list item using the found index and add the active class
+              let listing = document.getElementById('listing-' + eventId);
+              if (listing) {
+                listing.classList.add('active')
+              };
+            })
+            }
+
+            function flyToStore(currentFeature) {
+                map.flyTo({
+                center: currentFeature.marker.coordinates,
+                zoom: 15
+            });
+              
+            let marker = markerMap[currentFeature.properties.event_id];
+                marker.togglePopup();
+            }
+        // End script tag for Mapbox data, geoJSON
+        </script>
+            
+        <!-- End of map div -->
+        </div>
+    <!-- End of second row -->
+    </div>
+<!-- End of container -->
+</div>
+
+{% endblock %}

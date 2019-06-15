@@ -60,17 +60,19 @@ def load_random_users():
 def load_fake_bookmarks():
     """See fake bookmarks into popnoms db. Do this after seeding database and before running app."""
 
-    # timestamp = datetime.now()
+    timestamp = datetime.now()
 
-    # for x in range(15):
-    #     bookmark = Bookmark(event_id="58032445607", user_id=x,
-                              # bookmark_type = "going", timestamp=timestamp)
+    for x in range(1,15):
+        bookmark = Bookmark(event_id="61524483386", user_id=x,
+                              bookmark_type = "going", timestamp=timestamp)
+        db.session.add(bookmark)
 
-    # for y in range(12):
-    #     bookmark = Bookmark(event_id="58032445607", user_id=x,
-                              # bookmark_type = "interested", timestamp=timestamp)
+    for y in range(16,45):
+        bookmark = Bookmark(event_id="61524483386", user_id=y,
+                              bookmark_type = "interested", timestamp=timestamp)
+        db.session.add(bookmark)
 
-    pass
+    db.session.commit()
                               
 
 if __name__ == "__main__":
@@ -84,3 +86,4 @@ if __name__ == "__main__":
 
     # Add the bookmark types
     load_random_users()
+    load_fake_bookmarks()

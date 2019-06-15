@@ -119,7 +119,6 @@ def display_events():
 
     #Obtain map center coordinates
     map_center = set_map_center(location)
-    print("Map Center:", map_center)
 
     #Obtain list of venue_ids of events
     venue_ids = []
@@ -127,8 +126,6 @@ def display_events():
         venue_id = event["venue_id"]
         event["venue_id"] = venue_id
         venue_ids.append(venue_id)
-
-    print("Venue ID List:", venue_ids)
 
     #Obtain list of coordinates of events
     coordinates_list = []
@@ -138,13 +135,12 @@ def display_events():
 
         coordinates_list.append(coordinates)
 
-    print(coordinates_list)
-
-    return render_template("events.html", 
+    return render_template("events_2.html", 
                             events=events,
                             location=location,
                             map_center=map_center,
                             coordinates_list=coordinates_list)
+
 
 @app.route("/event_details", methods=["GET","POST"])
 def view_event_details():
@@ -178,7 +174,7 @@ def view_event_details():
         interested = "Please log in to view interested list."
     
 
-    return render_template("event_details_2.html",
+    return render_template("event_details.html",
                             details=details,
                             username=username,
                             bookmark=bookmark,
@@ -191,13 +187,10 @@ def bookmark_event():
     """Mark event as bookmarked and add to db."""
 
     event_id = request.form["event_id"]
-    print(event_id)
     # Status of bookmark type "going", "interested"
     status = request.form["bookmark_type"]
-    print(status)
     # Get user ID from session
     user_id = session.get("user_id")
-    print(user_id)
 
     # This helper function returns either bookmark_success or bookmark_failure message
     return add_bookmark_to_db(status, event_id, user_id)
@@ -242,9 +235,23 @@ def view_user_profile():
 
     user_id = request.args.get("user_id")
 
+    going_details = []
+    interested_details = []
+
     user = db.session.query(User).filter(User.user_id == user_id).one()
 
-    return render_template("user_profile.html", user=user)
+    # Get details for events bookmarked "going"
+    bookmarked_going = db.session.query(Bookmark).filter((Bookmark.bookmark_type == "going") & (Bookmark.user_id == user_id)).all()
+    for event in bookmarked_going:
+        going_details.append(get_event_details(event.event_id))
+
+    # Get details for events bookmarked "interested"
+    bookmarked_interested = db.session.query(Bookmark).filter((Bookmark.bookmark_type == "interested") & (Bookmark.user_id == user_id)).all()
+    for event in bookmarked_interested:
+        interested_details.append(get_event_details(event.event_id))
+
+    return render_template("user_profile.html", user=user,
+                            going_details=going_details, interested_details=interested_details)
     
 if __name__ == "__main__":
     app.debug = True

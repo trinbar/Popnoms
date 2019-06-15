@@ -41,9 +41,6 @@ def parse_datetime(timezone, local_dt_str):
 
     # Makes a new datetime object with timezone
     local_time = tz.localize(dt_obj)
-
-    # local_time = local_time.ctime()
-
     local_time = local_time.strftime('%A, %B %-d at %-I:%M%p')
 
     return local_time
@@ -70,7 +67,6 @@ def get_events(location, start_date_kw):
     response = requests.get(EVENTBRITE_URL + "events/search/", headers=headers, params=payload)
 
     data = response.json()
-    print(data)
 
     events = []
 
@@ -99,6 +95,7 @@ def get_events(location, start_date_kw):
         event_details["end_time"] = end_time
         event_details["eb_url"] = eb_url
         event_details["venue_id"] = venue_id
+        event_details["end_timezone"] = end_timezone
 
         # Check to see if logo exits, if it doesn't, set it to a default image
         if logo is not None:
@@ -115,14 +112,6 @@ def get_events(location, start_date_kw):
 def get_event_details(event_id):
     """Gets details about a specific event by id"""
     
-    # # Get event by event id
-    # event = Event.query.get(event_id)
-    # # If we already have the event in DB return event object
-    # if event:
-    #     return event
-
-    # If not, make an API call
-
     headers = {'Authorization': 'Bearer ' + EVENTBRITE_TOKEN}
 
     response = requests.get(EVENTBRITE_URL + f"events/{event_id}/", headers=headers, verify=True)
@@ -165,15 +154,6 @@ def get_event_details(event_id):
     "start_time": start_time, "start_time_local": start_time_local, "start_time_tz": start_time_tz,
     "end_time": end_time, "end_time_local": end_time_local, "end_time_tz": end_time_tz, "logo": logo,
     "address": address, "venue_id": venue_id, "venue_name": venue_name}
- # # Add event to table - don't want to do this yet. save in separate function
- #    event = Event(event_id=event_id, name=name, eb_url=eb_url, logo=logo, 
- #        start_time=start_time, start_time_local=start_time_local, end_time=end_time,
- #        end_time_local=end_time_local, venue_id=venue_id, venue_name=venue_name, 
- #        address=address, latitude=latitude, longitude=longitude, capacity=capacity, 
- #        is_free=is_free, description=description)
-
- #    db.session.add(event)
- #    db.session.commit()
 
     return event_details
 
@@ -188,7 +168,7 @@ def add_bookmark_to_db(status, event_id, user_id):
     if user_id:
         # Make a new Bookmark, passing it the user_id, event_id, and bookmarktype object, add & commit
         bookmark = Bookmark(user_id=user_id, event_id=event_id, bookmark_type=status, timestamp=timestamp)
-        print("BOOKMARK", bookmark)
+  
         db.session.add(bookmark)
         db.session.commit()
         # Return success message
@@ -231,7 +211,6 @@ def get_venue_coordinates(venue_id):
             headers=headers, verify=True)
 
     data = response.json()
-    print(data)
 
     # Get lat and long from the JSON response
     latitude = float(data["address"]["latitude"])

@@ -44,9 +44,10 @@ class Bookmark(db.Model):
     __tablename__ = "bookmarks"
     
     bookmark_id = db.Column(db.Integer, autoincrement=True, primary_key=True,)
-    #event_id is a string because that is the datatype in the API
     bookmark_type = db.Column(db.String(20), nullable=False,)
-    event_id = db.Column(db.String, unique=True, nullable=False,)
+    #event_id is a string because that is the datatype in the API
+    #event_id is not unique because an event can be bookmarked many times by many users (many-to-many)
+    event_id = db.Column(db.String, nullable=False,)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False,)
     timestamp = db.Column(db.DateTime, nullable=False,)
     
@@ -58,7 +59,7 @@ class Bookmark(db.Model):
 
         return f"<Bookmark bookmark_id={self.bookmark_id} bookmark_type={self.bookmark_type} event_id={self.event_id} user_id={self.user_id}>"
 
-#May not need this Event because API calls details; keep as placeholder
+#May not need this Event because API calls details; keep as placeholder for future implementation
 # class Event(db.Model):
 #     """Event of Popnoms website."""
 

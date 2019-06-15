@@ -29,7 +29,7 @@
                             {{ details.start_time }} ({{ details.start_time_tz }})
                             <br>
                             <br>
-                            <h5>Location:</h5>
+                            <h5>Where:</h5>
                             {{ details.address }}
                         <!-- End of card text: Time and location-->
                         </p>
@@ -45,6 +45,7 @@
                                 <!-- Button 2: Interested -->
                                 <input type="radio" class="bookmark" name="interested_bookmark" value="interested" data-eventid={{ details.event_id }} {% if bookmark and bookmark.bookmark_type == 'interested' %} checked {% endif %}>  Interested
                                 <!-- End of form -->
+                                <br>
                             </form>
                             <!-- AJAX that posts form inputs to server where it saves to db -->
                                 <script>
@@ -74,8 +75,22 @@
 
                     <!-- End of endif -->
                     {% endif %}
-                        <!-- End of card text includes buttons-->
-                        </p>
+
+                    <!-- Facebook button -->
+                    <div id="fb-root">
+                    </div>
+                        <script async defer crossorigin="anonymous"
+                        src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3">
+                        </script>
+                        <div class="fb-share-button" data-size="large" data-href="{{ details.eb_url }}" data-layout="button"></a>
+                        </div>
+        
+                    <!-- Twitter button -->
+                        <a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Check%20out%20this%20PopNom%20event!"data-size="large">
+                        <a href={{ details.eb_url }}></a>
+                        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8">
+                        </script>
+
 
                 <!-- End of first card-body div -->
                 </div>
@@ -85,7 +100,17 @@
         </div>
     <!-- End of first card mb-3 div -->
     </div>
-    <!-- Start of second card includes description and buttons -->
+
+            <!-- Start of column includes share buttons -->
+            <div class="col-md-6">
+                    <!-- Buy tickets on Eventbrite button -->
+                    <a href="{{ details.eb_url }}" class="btn btn-success">
+                        Buy Tickets from Eventbrite
+                    </a><br><br>
+            <!-- End of column div -->
+            </div>
+
+    <!-- Start of third card includes description and buttons -->
     <div class="card mb-3" style="max-width: 100%; border: 2px solid #007bff; padding-top: 20px; padding-bottom: 20px;" align="left">
         <!-- Start of row -->
         <div class="row" style="height: 100%">
@@ -95,6 +120,7 @@
                 <div class="card-body">
                     <!-- Start of card text includes description-->
                     <p class="card-text">
+                    <br><b><u>Description</u></b><br>
                     {{ details.description }}
                     <!-- End of card-text p -->
                     </p>
@@ -111,9 +137,9 @@
                         <!-- Start row of going user thumbnails -->
                         <div class="row" style="height: 100%; border: 0;">
                             {% for attendee in attendees %}
-                            <p class="card-text">
+                            <p class="card-text" style="width: 100px;">
                                 <a href="/user_profile?user_id={{ attendee.user_id }}">
-                                    <img src="{{ attendee.thumb_pic}}" style="border-radius: 35px;">
+                                    <img src="{{ attendee.thumb_pic}}" style="border-radius: 35px; padding:2px;">
                                 </a>
                             <!-- End of card text p -->
                             </p>
@@ -127,9 +153,9 @@
                     <!-- Start row of interested user thumbnails -->
                     <div class="row" style="height: 100%; border:0;">
                         {% for attendee in interested %}
-                        <p class="card-text">
+                        <p class="card-text" style="width: 100px;">
                             <a href="/user_profile?user_id={{ attendee.user_id }}">
-                                <img src="{{ attendee.thumb_pic}}" style="border-radius: 35px;">
+                                <img src="{{ attendee.thumb_pic}}" style="border-radius: 35px; padding: 2px;">
                             </a>
                         <!-- End of card text p -->
                         </p>
@@ -142,7 +168,7 @@
         </div>
     <!-- End of card mb-3 div -->
     </div>
-            
+    
 
 <!-- End of container div -->
 </div>
