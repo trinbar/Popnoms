@@ -135,7 +135,7 @@ def display_events():
 
         coordinates_list.append(coordinates)
 
-    return render_template("events_2.html", 
+    return render_template("events.html", 
                             events=events,
                             location=location,
                             map_center=map_center,

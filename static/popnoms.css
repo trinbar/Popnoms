@@ -8,6 +8,16 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.hero-image {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("popnom_homepage.png");
+  height: 40%;
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
 .profile-name {
   font-size: 3rem;
   font-weight: bold;
@@ -75,8 +85,8 @@ a:hover {
 .media {
   width: 500px;
   height: 100px;
-  border: 0.5px;
-  border-color: grey;
+  border: 1px;
+  border-color: #dddddd;
   border-style: solid;
   border-radius: 2px;
   margin: 8px;
@@ -84,7 +94,14 @@ a:hover {
 }
 
 .media.active {
-  border-color: #aaaaaa;
+  width: 500px;
+  height: 100px;
+  border: 1px;
+  border-color: #dddddd;
+  border-style: solid;
+  border-radius: 2px;
+  margin: 8px;
+  padding: 8px;
   box-shadow: 5px 5px 5px grey;
 }
 

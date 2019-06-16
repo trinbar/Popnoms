@@ -3,19 +3,21 @@
 {% block title %}My PopNom Profile{% endblock %}
 
 {% block content %}
+<body style="background-color: #eeeeee;">
+</body>
 
 <!-- Start of container div -->
 <div class="container" align="center">
     <!-- Start of main profile card with large picture, name, location, joined -->
     <div class="card" style="max-width: 100%;" align="center">
         <!-- Start of row -->
-        <div class="row" style="height: 100%; border: 2px solid #007bff; box-shadow: 5px 6px 0px #007bff; padding-top: 20px; padding-bottom: 20px;">
+        <div class="row" style="height: 100%; border: 2px solid #404040; border-radius: 6px; box-shadow: 5px 6px 0px #404040; padding-top: 20px; padding-bottom: 20px;">
             <!-- Start of first column includes profile pic -->
             <div class="col-md-4">
                 <!-- Start of profile pic wrapper div -->
                 <div class="profile-pic-wrapper">
                     <!-- Profile pic -->
-                    <img src={{user.lrg_pic}} style="height: 200px; width: 200px; border-radius: 150px; border: 2px solid #007bff;">
+                    <img src={{user.lrg_pic}} style="height: 200px; width: 200px; border-radius: 150px; border: 2px solid #404040;">
                 <!-- End of profile pic wrapper -->
                 </div>
             <!-- End of col-md-4 div -->
@@ -80,7 +82,7 @@
         <!-- Start of column -->
         <div class="col-md-6">
             <!-- Start of first card in row -->
-            <div class="card mb-3" style="border: 2px solid #007bff;">
+            <div class="card mb-3" style="border: 2px solid #404040;">
                 <!-- Start of card body div -->
                 <div class="card-body">
                     <!-- Card title for Attending list -->
@@ -117,7 +119,7 @@
         <!-- Start new row of cards -->
         <div class="row" style="height: 100%;">
             <!-- Start of second card in row -->
-            <div class="card mb-3" style="border: 2px solid #007bff;">
+            <div class="card mb-3" style="border: 2px solid #404040;">
                 <!-- Start of card body div -->
                 <div class="card-body">
                     <!-- Card title for Interested list -->

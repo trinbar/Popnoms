@@ -1,13 +1,19 @@
 {% extends 'base.html' %}
 
+{% block title %}PopNoms{% endblock %}
+
 {% block content %}
-<body style="background-image: url(static/popnom_homepage.png)">
-  <div align=center>
-    <h3 id="title" style="font-family: 'Arvo', serif; font-size: 105px; font-style: bold; color: yellow;">
-    <b>EAT ADVENTUROUSLY</b></h3>
+
+<!-- Start of container div -->
+<body style="background-image: url('/static/popnom_homepage.png'); background-color: #000000; font-color: white;">
+</body>
+
+<div align=center>
+    <h3 id="title" style="font-family: 'Arvo', serif; font-size: 105px; font-style: bold; color: white;">
+    <b><br>EAT ADVENTUROUSLY</b></h3>
   <form action="/events" method="POST">
-    <br>  
-    In
+    <br>
+    <h3 style="font-color: white;">In
       <input class="location" type="location" name="location">
     On/Around
       <select class="date_kw" type="date_kw" name="date_kw"><br>
@@ -18,14 +24,12 @@
        <option value="next_week">Next Week</option>
        <option value="this_month">This Month</option>
        <option value="next_month">Next Month</option>
-
+       <br>
     <input class="submit" type="submit" name="submit" value="Search">
-</form>
+    </h3>
+    </form>
 </div>
-</body>
 
-<!-- Comments:
-- Place div (lines 4-22) onto a background image
-- Place above bullet into a container -->
+
 
 {% endblock %}

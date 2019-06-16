@@ -9,9 +9,6 @@
   <link rel="stylesheet" href="/static/popnoms.css">
   <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
 
-
-
-
 <!-- MAPBOX -->
 <meta charset="utf-8">
 
@@ -28,22 +25,28 @@
 <!-- Arvo font -->
 <link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
 
+<!-- Font awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <title>PopNoms</title>
 
 </head>
 
 
-<body style="background-color: #ffffff;">
+<body>
 
 <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary navbar-default fixed-top">
-  <a class="navbar-brand" href="/">PopNoms</a>
+<nav class="navbar navbar-expand-lg navbar-light navbar-default fixed-top" style="background-color: white; border-bottom: 1px;">
+    <a class="navbar-brand" href="/">
+        <img src="/static/utensils.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+        PopNoms
+    </a>
 
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarColor01">
+  <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
         <a class="nav-link" href="#">Home</a>
@@ -54,7 +57,7 @@
     </ul>
   </div>
 
-  <div class="collapse navbar-collapse" id="navbarColor01">
+  <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
       {% if "user_id" in session %}
       <li class="nav-item">

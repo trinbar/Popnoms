@@ -95,7 +95,6 @@ def get_events(location, start_date_kw):
         event_details["end_time"] = end_time
         event_details["eb_url"] = eb_url
         event_details["venue_id"] = venue_id
-        event_details["end_timezone"] = end_timezone
 
         # Check to see if logo exits, if it doesn't, set it to a default image
         if logo is not None:

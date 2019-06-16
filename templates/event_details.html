@@ -3,41 +3,88 @@
 {% block title %}PopNoms{% endblock %}
 
 {% block content %}
+<body style="background-color: #eeeeee;">
+</body>
 
 <!-- Start of container div -->
-<div class="container" align="center">
-    <!-- Start of card with event logo image, name, start time, address, buttons -->
-    <div class="card mb-3" style="max-width: 100%; border: 2px solid #007bff; box-shadow: 5px 6px 0px #007bff; padding: 20px;" align="center">
-        <!-- Start of row -->
-        <div class="row" style="height: 100%" >
-            <!-- Start of column includes event logo -->
-            <div class="col-md-4">
-              <img src="{{ details.logo }}" class="card-img" style="width: 500px; height: 350px;">
-            <!-- End of column includes event logo -->
+<div class="event-details-container" align="center">
+    <!-- Hero image div -->
+    <div class="hero-image" style="border-radius: 3px;">
+        <!-- Start of card-mb-3 div -->
+        <div class="card-mb-3" style="width: 100%;" align="center">
+            <!-- Start of row div -->
+            <div class="row" style="height:100%; width: 1024px; flex-wrap: nowrap;" align="center">
+                <!-- Event image logo -->
+                <img src="{{ details.logo }}" class="card-img" style="width: 100%; height:600px; margin: 25px; border: 5px solid white;">
+            <!-- End of row div -->
             </div>
-            <!-- Start of column includes name, start time, location, buttons -->
-            <div class="col-md-8" style="left: 8%;">
-                <!-- Start of card body -->
-                <div class="card-body">
-                    <!-- Card title: name -->
-                    <h2 class="card-title">
-                        {{ details.name }}
-                    </h2>
-                        <!-- Card text: Time and location -->
-                        <p class="card-text">
-                            <h5>When:</h5>
-                            {{ details.start_time }} ({{ details.start_time_tz }})
-                            <br>
-                            <br>
-                            <h5>Where:</h5>
-                            {{ details.address }}
-                        <!-- End of card text: Time and location-->
-                        </p>
+        <!-- End of card-mb-3 div -->
+        </div>
+    <!-- End of hero image div -->
+    </div>
+<!-- End of container div -->
+</div>
+
+<!-- Start of second container div -->
+<div class="container">
+    <!-- Start of second row div -->
+    <div class="row" align="center">
+        <!-- Start of single column -->
+        <div class="col-md-12">
+            <h2><b>
+                {{ details.name }}
+            </b></h2>
+        <!-- End of single column -->
+        </div>
+    <!-- End of second row div -->
+    </div>
+
+    <!-- Start of third row div -->
+    <div class="row" align="center">
+        <!-- Start of col-md-8 -->
+        <div class="col-md-8">
+            <!-- Start of card body div includes description -->
+            <div class="card-body" align="left">
+                <p class="card-text">
+                    <br>
+                    <h5>About this event</h5>
+                    <br>
+                    {{ details.description }}
+                </p>
+            <!-- End of card body -->
+            </div>
+        <!-- End of col-md-8 div -->
+        </div>
+        <!-- Start of col-md-4 -->
+        <div class="col-md-4" style="vertical-align: center;">
+            <!-- Start of When and Where -->
+            <div class="card-body">
+                <p class="card-text">
+                    <br>
+                    <h5>When:</h5>
+                        {{ details.start_time }}
                         <br>
+                        to
+                        <br>
+                        {{ details.end_time }}
+                        <br>
+                        ({{ details.end_time_tz}})
+                        <br>
+                        <br>
+                    <h5>Where:</h5>
+                    {{ details.address }}
+                <!-- End of When and Where -->
+                </p>
+
+                <!-- Bookmarks -->
+                <p class="card-text">
+                    <br>
+                    <!-- Form - two radio buttons -->
                     {% if "user_id" in session %}
-                    <h5 class="card-title">Bookmark Event</h5>
+                    <h5 class="card-title">
+                        Bookmark Event
+                    </h5>
                         <!-- Card text: buttons -->
-                        <p class="card-text">
                             <!-- Form - two radio buttons -->
                             <form action="/bookmark_event" method="POST">
                                 <!-- Button 1: Going -->
@@ -71,106 +118,95 @@
                                           $.post("/bookmark_event", payload, validateForm);
                                         });
                                     });
-                                  </script>
-
+                                </script>
                     <!-- End of endif -->
                     {% endif %}
-
-                    <!-- Facebook button -->
-                    <div id="fb-root">
-                    </div>
+                <!-- End of bookmarks -->
+                </p>
+                <br><br>
+                <!-- Social media buttons -->
+                <p class="card-text">
+                    <h5>Share with friends</h5>
+                        <!-- Facebook -->
+                        <div id="fb-root">
+                        </div>
                         <script async defer crossorigin="anonymous"
                         src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3">
                         </script>
                         <div class="fb-share-button" data-size="large" data-href="{{ details.eb_url }}" data-layout="button"></a>
                         </div>
-        
-                    <!-- Twitter button -->
-                        <a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Check%20out%20this%20PopNom%20event!"data-size="large">
-                        <a href={{ details.eb_url }}></a>
-                        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8">
-                        </script>
-
-
-                <!-- End of first card-body div -->
-                </div>
-            <!-- End of first col-md-8 div -->
-            </div>
-        <!-- End of first row div -->
-        </div>
-    <!-- End of first card mb-3 div -->
-    </div>
-
-            <!-- Start of column includes share buttons -->
-            <div class="col-md-6">
-                    <!-- Buy tickets on Eventbrite button -->
+                        <!-- End of Facebook -->
+                        <br><br>
+                        <!-- Twitter -->
+                            <a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Check%20out%20this%20PopNom%20event!"data-size="large">
+                            <a href={{ details.eb_url }}></a></a>
+                            <script 
+                                async src="https://platform.twitter.com/widgets.js" charset="utf-8">
+                            </script>
+                    
+                        <!-- End of Twitter -->
+                <!-- End of social media buttons -->
+                </p>
+                <br><br><br>
+                <!-- Eventbrite button -->
+                <p class="card-text">
                     <a href="{{ details.eb_url }}" class="btn btn-success">
                         Buy Tickets from Eventbrite
-                    </a><br><br>
-            <!-- End of column div -->
+                    </a>
+                </p>
+            <!-- End of card body div -->
             </div>
-
-    <!-- Start of third card includes description and buttons -->
-    <div class="card mb-3" style="max-width: 100%; border: 2px solid #007bff; padding-top: 20px; padding-bottom: 20px;" align="left">
-        <!-- Start of row -->
-        <div class="row" style="height: 100%">
-            <!-- Start of column includes event description -->
-            <div class="col-md-6">
-                <!-- Start of card body -->
-                <div class="card-body">
-                    <!-- Start of card text includes description-->
-                    <p class="card-text">
-                    <br><b><u>Description</u></b><br>
-                    {{ details.description }}
-                    <!-- End of card-text p -->
-                    </p>
-                <!-- End of card-body div -->
-                </div>
-            <!-- End col-md-6 div -->
-            </div>
-            <!-- Start of column includes user lists -->
-            <div class="col-md-6" style="left: 8%;">
-                <!-- Start of card body includes user lists -->
-                <div class="card-body">
+        <!-- End of col-md-4 -->
+        </div>
+        <!-- Start of column userlist attending -->
+        <div class="col-md-6">
+            <!-- Start of card body includes user list attending -->
+                <div class="card-body" align="center">
                     <!-- Card first title going -->
-                    <h5 class="card-title" style="color: #007bff;">PopNom Users Attending This Event</h5>
+                    <h5 class="card-title" style="color: #007bff;" align="left">PopNom Users Attending This Event</h5>
                         <!-- Start row of going user thumbnails -->
                         <div class="row" style="height: 100%; border: 0;">
                             {% for attendee in attendees %}
-                            <p class="card-text" style="width: 100px;">
+                            <p class="card-text" style="width: 100px;" align="center">
                                 <a href="/user_profile?user_id={{ attendee.user_id }}">
-                                    <img src="{{ attendee.thumb_pic}}" style="border-radius: 35px; padding:2px;">
+                                    <img src="{{ attendee.thumb_pic}}" style="border-radius: 35px; padding:1px;">
                                 </a>
                             <!-- End of card text p -->
                             </p>
                             {% endfor %}
                         <!-- End of user thumbnail row div -->
                         </div>
-                        <!-- Whitespace between user lists -->
-                        <br>
-                    <!-- Card second title interested -->
-                    <h5 class="card-title" style="color: #007bff;">PopNom Users Interested In This Event</h5>
+                <!-- End of card body -->
+                </div>
+        <!-- End of col-md-6 -->
+        </div>
+        <!-- Start of column userlist interested -->
+        <div class="col-md-6">
+            <!-- Start of card body includes user list interested -->
+            <div class="card-body" align="center">
+                <!-- Card second title interested -->
+                    <h5 class="card-title" style="color: #007bff;" align="left">PopNom Users Interested In This Event</h5>
                     <!-- Start row of interested user thumbnails -->
                     <div class="row" style="height: 100%; border:0;">
                         {% for attendee in interested %}
-                        <p class="card-text" style="width: 100px;">
+                        <p class="card-text" style="width: 100px;" align="center">
                             <a href="/user_profile?user_id={{ attendee.user_id }}">
-                                <img src="{{ attendee.thumb_pic}}" style="border-radius: 35px; padding: 2px;">
+                                <img src="{{ attendee.thumb_pic}}" style="border-radius: 35px; padding: 1px;">
                             </a>
                         <!-- End of card text p -->
                         </p>
                         {% endfor %}
-                <!-- End of card body div -->
+                    <!-- End of  row -->
+                    </div>
+                <!-- End of card body -->
                 </div>
-            <!-- End of col-md-6 div -->
+            <!-- End of col-md-6 interested -->
             </div>
-        <!-- End row div -->
-        </div>
-    <!-- End of card mb-3 div -->
+    <!-- End of second row div -->
     </div>
-    
-
-<!-- End of container div -->
 </div>
+
+
+
 
 {% endblock %}
