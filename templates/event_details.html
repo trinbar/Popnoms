@@ -100,10 +100,8 @@
                                     function validateForm() {
                                         let bookmark = document.querySelector("bookmark");
                                         if (bookmark.checked == true) {
-                                            console.log("true")
                                             return true;
                                          } else {
-                                            console.log("false")
                                             return false
                                            }
                                     }
@@ -114,7 +112,6 @@
                                           let bookmarkType = $(this).attr("value");
                                           let payload = {"event_id": eventId,
                                                        "bookmark_type": bookmarkType};
-                                            console.log(payload)
                                           $.post("/bookmark_event", payload, validateForm);
                                         });
                                     });
