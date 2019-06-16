@@ -3,7 +3,7 @@
 {% block title %}PopNoms in {{ location }}{% endblock %}
 
 {% block content %}
-<body style="background-color: #dddddd;">
+<body style="background-color: #F9F6F6;">
 </body>
 
 <!-- Start of container div -->
@@ -160,7 +160,7 @@
             let listings = document.querySelectorAll(".media");
 
             for (let i = 0; i < listings.length; i++) {
-                listings[i].addEventListener("mouseover", function(evt) {
+                listings[i].addEventListener("click", function(evt) {
                     let eventId = evt.target.dataset.event_id;
                     let marker = getMarkerForEventId(eventId);
                     flyToStore(marker);
