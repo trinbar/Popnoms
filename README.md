@@ -22,9 +22,7 @@ From the homepage users can sign up and sign in from the navigation bar, and can
 This will take them to an event listing page where users can view the listings on the left-hand sidebar and their locations on a map. As a user hovers their cursor over a map marker, the sidebar will scroll to the event and the event card will be highlighted. To view details of the event, users can either click on the URL in the map marker's info window or on the event's logo inside of the event card.
 
 <h3>Event Details</h3>
-```
-![Event details demo](demo/READme_3.gif)
-```
+<img src="/demo/READme_3.gif">
 From the event details page, users can
 <ul>
   <li>Read the event description</li>
