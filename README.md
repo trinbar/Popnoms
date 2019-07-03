@@ -11,19 +11,19 @@ Python3, JavaScript (jQuery, AJAX), HTML/CSS, PostgreSQL, SQLAlchemy
 # Features
 <h3>Homepage</h3>
 ```
-![Homepage demo](/demo/READme_1.gif)
+![](/demo/READme_1.gif)
 ```
 From the homepage users can sign up and sign in from the navigation bar, and can search pop-up dining events in any city within the next month.
 
 <h3>Event Listings</h3>
 ```
-![Listings demo](/demo/READme_2.gif)
+![](/demo/READme_2.gif)
 ```
 This will take them to an event listing page where users can view the listings on the left-hand sidebar and their locations on a map. As a user hovers their cursor over a map marker, the sidebar will scroll to the event and the event card will be highlighted. To view details of the event, users can either click on the URL in the map marker's info window or on the event's logo inside of the event card.
 
 <h3>Event Details</h3>
 ```
-![Details demo](/demo/READme_3.gif)
+![](/demo/READme_3.gif)
 ```
 From the event details page, users can
 <ul>
@@ -36,7 +36,7 @@ From the event details page, users can
 
 <h3>User Profile</h3>
 ```
-![Profile demo](/demo/READme_4.gif)
+![](/demo/READme_4.gif)
 ```
 Once an event is bookmarked, the bookmarked event will appear in their profile.
 
