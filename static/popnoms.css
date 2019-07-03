@@ -1,6 +1,6 @@
 /*MAPBOX: Map sidebar and marker*/
 body {
-  background: #ffffff;
+  background: #F9F6F6;
   color: #f8f8f8;
   font: 500 20px/26px 'Helvetica Neue', Helvetica, Arial, Sans-serif;
   margin: 100px;
@@ -32,6 +32,8 @@ gets 2/3 of the page. You can adjust this to your personal liking. */
   height: 100%;
   overflow: auto;
   background-color: #ffffff;
+  margin-top: 32px;
+  padding-left: 34px;
 }
 
 ::-webkit-scrollbar {
@@ -41,30 +43,13 @@ gets 2/3 of the page. You can adjust this to your personal liking. */
   background: #ffffff;
 }
 
-::-webkit-scrollbar-track {
-  background: none;
+.sidebar-event-img {
+  width: 64px;
+  height: 64px;
+  border-radius: 2px;
+  margin: 8px;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #ffffff;
-  border-radius: 0;
-}
-
-a {
-  color: #404040;
-  text-decoration: none;
-}
-
-a:hover {
-  color: #101010;
-}
-
-/*.pad2 {
-  padding: 20px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}*/
 
 .sidebar-heading {
   border-top: 10px;
@@ -127,36 +112,16 @@ a:hover {
   width: 100%
 }
 
+.row-max-height {
+  border-top: 10px;
+  width: 100%
+}
+
 .event-row {
   border-top: 10px;
   height: 50px;
   width: 60%
 }
-
-/*/*.listing-card .active {
-  display: block;
-  border-bottom: 1px solid #eee;
-  padding: 10px;
-  text-decoration: none;
-  border-color: #325D88;
-  box-shadow: 5px 5px 5px grey;
-}
-
-.event-card {
-  display: block;
-  border-bottom: 1px solid #eee;
-  padding: 10px;
-  text-decoration: none;
-}
-
-.event-card.active {
-  display: block;
-  border-bottom: 1px solid #eee;
-  padding: 10px;
-  text-decoration: none;
-  border-color: #325D88;
-  box-shadow: 5px 5px 5px grey;
-}*/
 
 
 .map {
@@ -235,35 +200,6 @@ a:hover {
   padding: 0 10px;
 }
 
-./*listings {
-  height: 100%;
-  overflow: auto;
-  padding-bottom: 0;
-}*/
-
-/*.listings .item {
-  display: block;
-  border-bottom: 1px solid #eee;
-  padding: 10px;
-  text-decoration: none;
-}
-
-.listings .item:last-child { border-bottom: none; }
-
-.listings .item .title {
-  display: block;
-  color: #00853e;
-  font-weight: 700;
-}
-
-.listings .item .title small { font-weight: 400; }
-
-.listings .item.active .title,
-.listings .item .title:hover { color: #8cc63f; }
-
-.listings .item.active {
-  background-color: #f8f8f8;
-}*/
 
 .clearfix { display: block; }
 

@@ -1,4 +1,8 @@
 env/
 *.pyc
 .DS_Store
+<<<<<<< HEAD
 secrets.sh
+=======
+secrets.sh
+>>>>>>> 9f3c2dbce1ebbc09f38be00d01a8457761f4589f

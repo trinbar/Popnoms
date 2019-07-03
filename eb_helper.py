@@ -13,7 +13,6 @@ from model import User, Bookmark, db, connect_to_db
 
 #make sure to run source secrets.sh whenever activating new virtualenv
 
-
 # Global variables: Eventbrite token and URL
 # Change to secrets when ready for GitHub!!!
 # EVENTBRITE_TOKEN = os.getenv('EVENTBRITE_TOKEN')
