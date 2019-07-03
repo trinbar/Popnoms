@@ -2,7 +2,7 @@
 PopNoms is a  pop-up dining event finder that will find event listings and renders the event location on a map using Eventbrite and Mapbox APIs.
 
 # About the Developer
-PopNoms was created by Trinity Dunbar, a fellow at Hackbright Academy. 
+PopNoms was created by Trinity Dunbar, a Hackbright Academy alumna. 
 [View LinkedIn Profile](https://www.linkedin.com/in/trinity-dunbar).
 
 # Tech Stack
