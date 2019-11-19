@@ -29,7 +29,7 @@ From the event details page, users can
 </ul>
 
 <h3>User Profile</h3>
-<img src="demo/READme_3.gif">
+<img src="demo/READme_4.gif">
 Once an event is bookmarked, the bookmarked event will appear in their profile.
 
 # Set Up/Installation
